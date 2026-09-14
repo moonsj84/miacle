@@ -206,6 +206,32 @@
   word-break: keep-all;
 }
 
+/* 필수 / 선택 범례 --------------------------------------------------- */
+.atm-contact__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--atm-line-soft);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--atm-ink-45);
+}
+
+.atm-contact__legend-req {
+  color: var(--atm-error);
+  font-weight: 700;
+}
+
+.atm-contact__legend-sep {
+  width: 1px;
+  height: 11px;
+  margin-inline: 4px;
+  background: var(--atm-line);
+}
+
 /* 폼이 아직 이동해 오지 않았을 때 자리 표시 (로딩 스켈레톤) */
 .atm-contact__slot:empty::after {
   content: "입력폼을 불러오는 중입니다…";
@@ -289,13 +315,34 @@
   cursor: pointer;
 }
 
-/* 필수 표시(*) 강조 */
+/* 필수 표시(*) 강조 — 항목명 옆 별표가 확실히 눈에 띄도록 */
 .atm-contact__slot .required,
 .atm-contact__slot [class*="require"],
 .atm-contact__slot .necessary {
+  margin-left: 3px;
   color: var(--atm-error) !important;
-  font-weight: 700;
+  font-weight: 700 !important;
+  font-size: 14px !important;
 }
+
+/* '선택' 배지 — contact-form.js 가 필수가 아닌 항목명 뒤에 붙입니다.
+   필수는 빨간 별표, 선택은 회색 배지로 서로 다른 형태를 주어
+   색을 구분하기 어려운 분들도 구분할 수 있게 했습니다. */
+.atm-optional {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 1px 7px;
+  border: 1px solid var(--atm-line);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.6;
+  color: var(--atm-ink-45);
+  vertical-align: 1px;
+}
+
+.atm-optional--legend { margin-left: 0; }
 
 /* 5-2. 입력칸 ------------------------------------------------------------ */
 .atm-contact__slot input[type="text"],
@@ -389,6 +436,48 @@
   margin: 2px 0 0 !important;
   accent-color: var(--atm-accent);
   cursor: pointer;
+}
+
+/* 5-4-b. 선택지 그룹을 알약형 버튼으로 --------------------------------
+   contact-form.js 가 같은 name 을 쓰는 라디오/체크박스가 2개 이상인
+   컨테이너에 .atm-choice 를 붙입니다. (기존 아임웹 폼의 선택 UI와 맞춤) */
+.atm-contact__slot .atm-choice {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.atm-contact__slot .atm-choice label {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 9px;
+  margin: 0 !important;
+  padding: 11px 17px !important;
+  border: 1px solid var(--atm-line) !important;
+  border-radius: 999px !important;
+  background: var(--atm-surface) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+  color: var(--atm-ink-70) !important;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+}
+
+.atm-contact__slot .atm-choice label:hover { border-color: var(--atm-ink-45) !important; }
+
+.atm-contact__slot .atm-choice label:focus-within {
+  outline: 2px solid var(--atm-accent);
+  outline-offset: 2px;
+}
+
+/* 선택된 항목 — :has() 미지원 브라우저에서도 라디오 점으로 구분되므로
+   별도 규칙으로 분리해 두었습니다. */
+.atm-contact__slot .atm-choice label:has(input:checked) {
+  border-color: var(--atm-accent) !important;
+  background: color-mix(in srgb, var(--atm-accent) 7%, var(--atm-surface)) !important;
+  color: var(--atm-ink) !important;
+  font-weight: 500 !important;
 }
 
 /* 5-5. 개인정보 동의 등 약관 박스 ---------------------------------------- */

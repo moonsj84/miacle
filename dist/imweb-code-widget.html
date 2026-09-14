@@ -221,6 +221,32 @@
   word-break: keep-all;
 }
 
+/* 필수 / 선택 범례 --------------------------------------------------- */
+.atm-contact__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--atm-line-soft);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--atm-ink-45);
+}
+
+.atm-contact__legend-req {
+  color: var(--atm-error);
+  font-weight: 700;
+}
+
+.atm-contact__legend-sep {
+  width: 1px;
+  height: 11px;
+  margin-inline: 4px;
+  background: var(--atm-line);
+}
+
 /* 폼이 아직 이동해 오지 않았을 때 자리 표시 (로딩 스켈레톤) */
 .atm-contact__slot:empty::after {
   content: "입력폼을 불러오는 중입니다…";
@@ -304,13 +330,34 @@
   cursor: pointer;
 }
 
-/* 필수 표시(*) 강조 */
+/* 필수 표시(*) 강조 — 항목명 옆 별표가 확실히 눈에 띄도록 */
 .atm-contact__slot .required,
 .atm-contact__slot [class*="require"],
 .atm-contact__slot .necessary {
+  margin-left: 3px;
   color: var(--atm-error) !important;
-  font-weight: 700;
+  font-weight: 700 !important;
+  font-size: 14px !important;
 }
+
+/* '선택' 배지 — contact-form.js 가 필수가 아닌 항목명 뒤에 붙입니다.
+   필수는 빨간 별표, 선택은 회색 배지로 서로 다른 형태를 주어
+   색을 구분하기 어려운 분들도 구분할 수 있게 했습니다. */
+.atm-optional {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 1px 7px;
+  border: 1px solid var(--atm-line);
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.6;
+  color: var(--atm-ink-45);
+  vertical-align: 1px;
+}
+
+.atm-optional--legend { margin-left: 0; }
 
 /* 5-2. 입력칸 ------------------------------------------------------------ */
 .atm-contact__slot input[type="text"],
@@ -404,6 +451,48 @@
   margin: 2px 0 0 !important;
   accent-color: var(--atm-accent);
   cursor: pointer;
+}
+
+/* 5-4-b. 선택지 그룹을 알약형 버튼으로 --------------------------------
+   contact-form.js 가 같은 name 을 쓰는 라디오/체크박스가 2개 이상인
+   컨테이너에 .atm-choice 를 붙입니다. (기존 아임웹 폼의 선택 UI와 맞춤) */
+.atm-contact__slot .atm-choice {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.atm-contact__slot .atm-choice label {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 9px;
+  margin: 0 !important;
+  padding: 11px 17px !important;
+  border: 1px solid var(--atm-line) !important;
+  border-radius: 999px !important;
+  background: var(--atm-surface) !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 1.4 !important;
+  color: var(--atm-ink-70) !important;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease;
+}
+
+.atm-contact__slot .atm-choice label:hover { border-color: var(--atm-ink-45) !important; }
+
+.atm-contact__slot .atm-choice label:focus-within {
+  outline: 2px solid var(--atm-accent);
+  outline-offset: 2px;
+}
+
+/* 선택된 항목 — :has() 미지원 브라우저에서도 라디오 점으로 구분되므로
+   별도 규칙으로 분리해 두었습니다. */
+.atm-contact__slot .atm-choice label:has(input:checked) {
+  border-color: var(--atm-accent) !important;
+  background: color-mix(in srgb, var(--atm-accent) 7%, var(--atm-surface)) !important;
+  color: var(--atm-ink) !important;
+  font-weight: 500 !important;
 }
 
 /* 5-5. 개인정보 동의 등 약관 박스 ---------------------------------------- */
@@ -541,8 +630,6 @@
      아임웹 "코드 위젯"에 붙여넣는 블록입니다.
      이 블록 바로 아래에 "입력폼 위젯"(board_code=b202609115a34b122e2d20)을 놓으면
      contact-form.js 가 폼을 아래 .atm-contact__slot 안으로 옮겨 넣습니다.
-
-     ✏️ 표시가 있는 곳은 실제 정보로 교체해 주세요.
      ========================================================================== -->
 
 <section class="atm-contact" id="contact" aria-labelledby="atm-contact-title">
@@ -567,16 +654,14 @@
         <div class="atm-contact__info-row">
           <dt class="atm-contact__info-label">Email</dt>
           <dd class="atm-contact__info-value">
-            <!-- ✏️ 교체: 실제 문의 이메일 -->
-            <a href="mailto:hello@miacle.co.kr">hello@miacle.co.kr</a>
+            <a href="mailto:miaclife@naver.com">miaclife@naver.com</a>
           </dd>
         </div>
 
         <div class="atm-contact__info-row">
           <dt class="atm-contact__info-label">Phone</dt>
           <dd class="atm-contact__info-value">
-            <!-- ✏️ 교체: 실제 전화번호 (href 의 tel: 값도 함께 수정) -->
-            <a href="tel:+82540000000">054-000-0000</a>
+            <a href="tel:0507-1379-5380">0507-1379-5380</a>
             <span class="atm-contact__info-sub">평일 10:00 – 18:00 (주말·공휴일 휴무)</span>
           </dd>
         </div>
@@ -584,8 +669,7 @@
         <div class="atm-contact__info-row">
           <dt class="atm-contact__info-label">Studio</dt>
           <dd class="atm-contact__info-value">
-            <!-- ✏️ 교체: 실제 주소 -->
-            경상북도 포항시 북구 흥해읍
+            경북 포항시 북구 흥해읍 한동로40번길 20
             <span class="atm-contact__info-sub">방문 상담은 사전 예약제로 운영됩니다.</span>
           </dd>
         </div>
@@ -598,6 +682,13 @@
       <h3 class="atm-contact__panel-title">프로젝트 문의하기</h3>
       <p class="atm-contact__panel-desc">
         아래 항목을 작성해 주시면 상담을 준비해 연락드립니다.
+      </p>
+
+      <!-- 필수/선택 범례 — 폼 위에 항상 보이도록 둡니다. -->
+      <p class="atm-contact__legend">
+        <span class="atm-contact__legend-req">*</span> 필수 항목
+        <span class="atm-contact__legend-sep" aria-hidden="true"></span>
+        <span class="atm-optional atm-optional--legend">선택</span> 없어도 접수됩니다
       </p>
 
       <!-- 아임웹 입력폼 위젯이 이 안으로 이동합니다. 비워두세요. -->
@@ -861,6 +952,73 @@
     if (ta.parentElement) ta.parentElement.appendChild(counter);
   }
 
+  /* --- 선택지 그룹 / 필수·선택 표시 ------------------------------------ */
+
+  /** 같은 name 을 쓰는 라디오·체크박스가 2개 이상이면 알약형 버튼 그룹으로 */
+  function groupChoices(root) {
+    var done = {};
+
+    Array.prototype.forEach.call(
+      root.querySelectorAll('input[type="radio"], input[type="checkbox"]'),
+      function (el) {
+        var name = el.name;
+        if (!name || done[name]) return;
+
+        var group = root.querySelectorAll('input[name="' + CSS.escape(name) + '"]');
+        if (group.length < 2) return;          // 개인정보 동의 같은 단일 체크박스는 제외
+        done[name] = true;
+
+        var label = el.closest('label');
+        var box   = label ? label.parentElement : el.parentElement;
+        if (box) box.classList.add('atm-choice');
+      }
+    );
+  }
+
+  /** 항목명을 감싸는 필드 묶음 찾기 (입력칸을 포함하는 가장 가까운 조상) */
+  function fieldGroupOf(titleEl) {
+    var node = titleEl.parentElement;
+    var hops = 0;
+
+    while (node && hops < 4) {
+      if (node.querySelector('input:not([type="hidden"]), select, textarea')) return node;
+      node = node.parentElement;
+      hops++;
+    }
+    return null;
+  }
+
+  /**
+   * 필수가 아닌 항목의 항목명 뒤에 '선택' 배지를 붙입니다.
+   * 필수는 빨간 별표, 선택은 회색 배지 — 색이 아니라 형태로도 구분됩니다.
+   */
+  function markOptional(root) {
+    Array.prototype.forEach.call(
+      root.querySelectorAll('label, legend, [class*="tit"]'),
+      function (t) {
+        if (t.dataset.atmOpt) return;
+        if (t.querySelector('input, select, textarea')) return;  // 선택지 라벨 자체는 제외
+        if (t.closest('.atm-choice')) return;
+        if (t.matches('input, textarea, select')) return;
+
+        var group = fieldGroupOf(t);
+        if (!group) return;
+
+        t.dataset.atmOpt = '1';
+
+        var required = !!group.querySelector('[required], [aria-required="true"]') ||
+                       !!t.querySelector('[class*="require"], .necessary') ||
+                       t.textContent.indexOf('*') !== -1;
+        if (required) return;
+
+        var badge = document.createElement('span');
+        badge.className = 'atm-optional';
+        badge.textContent = '선택';
+        t.appendChild(badge);
+      }
+    );
+  }
+
   /** 제출 버튼 중복 클릭 방지 (submit 은 그대로 진행시킴) */
   function guardSubmit(root) {
     var form = root.matches('form') ? root : root.querySelector('form');
@@ -880,6 +1038,9 @@
   }
 
   function enhance(root) {
+    groupChoices(root);   // markOptional 이 .atm-choice 를 참조하므로 먼저 실행
+    markOptional(root);
+
     Array.prototype.forEach.call(
       root.querySelectorAll('input, textarea, select'),
       function (el) {

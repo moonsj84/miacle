@@ -245,6 +245,73 @@
     if (ta.parentElement) ta.parentElement.appendChild(counter);
   }
 
+  /* --- 선택지 그룹 / 필수·선택 표시 ------------------------------------ */
+
+  /** 같은 name 을 쓰는 라디오·체크박스가 2개 이상이면 알약형 버튼 그룹으로 */
+  function groupChoices(root) {
+    var done = {};
+
+    Array.prototype.forEach.call(
+      root.querySelectorAll('input[type="radio"], input[type="checkbox"]'),
+      function (el) {
+        var name = el.name;
+        if (!name || done[name]) return;
+
+        var group = root.querySelectorAll('input[name="' + CSS.escape(name) + '"]');
+        if (group.length < 2) return;          // 개인정보 동의 같은 단일 체크박스는 제외
+        done[name] = true;
+
+        var label = el.closest('label');
+        var box   = label ? label.parentElement : el.parentElement;
+        if (box) box.classList.add('atm-choice');
+      }
+    );
+  }
+
+  /** 항목명을 감싸는 필드 묶음 찾기 (입력칸을 포함하는 가장 가까운 조상) */
+  function fieldGroupOf(titleEl) {
+    var node = titleEl.parentElement;
+    var hops = 0;
+
+    while (node && hops < 4) {
+      if (node.querySelector('input:not([type="hidden"]), select, textarea')) return node;
+      node = node.parentElement;
+      hops++;
+    }
+    return null;
+  }
+
+  /**
+   * 필수가 아닌 항목의 항목명 뒤에 '선택' 배지를 붙입니다.
+   * 필수는 빨간 별표, 선택은 회색 배지 — 색이 아니라 형태로도 구분됩니다.
+   */
+  function markOptional(root) {
+    Array.prototype.forEach.call(
+      root.querySelectorAll('label, legend, [class*="tit"]'),
+      function (t) {
+        if (t.dataset.atmOpt) return;
+        if (t.querySelector('input, select, textarea')) return;  // 선택지 라벨 자체는 제외
+        if (t.closest('.atm-choice')) return;
+        if (t.matches('input, textarea, select')) return;
+
+        var group = fieldGroupOf(t);
+        if (!group) return;
+
+        t.dataset.atmOpt = '1';
+
+        var required = !!group.querySelector('[required], [aria-required="true"]') ||
+                       !!t.querySelector('[class*="require"], .necessary') ||
+                       t.textContent.indexOf('*') !== -1;
+        if (required) return;
+
+        var badge = document.createElement('span');
+        badge.className = 'atm-optional';
+        badge.textContent = '선택';
+        t.appendChild(badge);
+      }
+    );
+  }
+
   /** 제출 버튼 중복 클릭 방지 (submit 은 그대로 진행시킴) */
   function guardSubmit(root) {
     var form = root.matches('form') ? root : root.querySelector('form');
@@ -264,6 +331,9 @@
   }
 
   function enhance(root) {
+    groupChoices(root);   // markOptional 이 .atm-choice 를 참조하므로 먼저 실행
+    markOptional(root);
+
     Array.prototype.forEach.call(
       root.querySelectorAll('input, textarea, select'),
       function (el) {

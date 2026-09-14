@@ -61,24 +61,36 @@ write('dist/imweb-code-widget.html', widget);
       스크립트가 폼을 CONTACT 카드 안으로 옮기는 동작까지 그대로 확인합니다.
    -------------------------------------------------------------------------- */
 
-const field = (label, required, control, help) => `
+const field = (label, required, control) => `
         <div class="form_element">
-          <div class="tit">${label}${required ? ' <span class="required">*</span>' : ''}</div>
-          <div class="ipt">${control}${help ? `<p class="form_help">${help}</p>` : ''}</div>
+          <div class="tit">${label}${required ? '<span class="required">*</span>' : ''}</div>
+          <div class="ipt">${control}</div>
         </div>`;
 
 const option = (v) => `<option value="${v}">${v}</option>`;
+
+/* 기존 아임웹 폼(서비스 종류 단계)과 동일한 항목.
+   라디오 그룹이므로 contact-form.js 가 알약형 버튼으로 묶습니다. */
+const SERVICES = [
+  '사진 촬영',
+  '영상 제작 (일반)',
+  'AI 영상 제작',
+  '브랜딩 / 디자인',
+  '마케팅 / 콘텐츠 기획',
+  '행사 / 이벤트 기록',
+  '기타'
+];
+
+const radios = (name, items) => `<div>${items.map((v, i) => `
+              <label><input type="radio" name="${name}" value="${v}"${i === 0 ? ' required' : ''}> ${v}</label>`
+            ).join('')}
+            </div>`;
 
 const mockForm = `
     <!-- ↓↓↓ 아임웹 [입력폼] 위젯이 그리는 마크업의 근사치 (미리보기 전용) ↓↓↓ -->
     <div class="widget widget_form" id="mock-imweb-form-widget">
       <form id="frm_form_b202609115a34b122e2d20" novalidate>
-${field('문의 유형', true,
-  `<select name="form[0]" required>
-              <option value="">선택해 주세요</option>
-              ${['브랜딩 · 브랜드 기획','마케팅 · 콘텐츠 운영','그래픽 디자인','사진 촬영','영상 제작','행사 · 전시 기획','공간 스타일링','기타 문의']
-                .map(option).join('\n              ')}
-            </select>`)}
+${field('원하시는 서비스를 선택해주세요', true, radios('form[0]', SERVICES))}
 ${field('성함 / 담당자명', true, `<input type="text" name="form[1]" placeholder="홍길동" required>`)}
 ${field('회사 · 브랜드명', false, `<input type="text" name="form[2]" placeholder="(주)미아클">`)}
 ${field('연락처', true, `<input type="tel" name="form[3]" required>`)}
