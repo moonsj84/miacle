@@ -103,8 +103,14 @@
 
 ## 3단계 · 코드 붙여넣기
 
-[`dist/imweb-code-widget.html`](../dist/imweb-code-widget.html) **전체**를 복사해
-2단계에서 만든 **코드 위젯**에 붙여넣고 저장합니다. 이게 전부입니다.
+페이지에 맞는 파일 **전체**를 복사해 2단계에서 만든 **코드 위젯**에 붙여넣고 저장합니다.
+
+| 페이지 | 파일 |
+|---|---|
+| 홈페이지 메인 | [`dist/main/imweb-code-widget.html`](../dist/main/imweb-code-widget.html) |
+| 앳더모먼 | [`dist/atmoment/imweb-code-widget.html`](../dist/atmoment/imweb-code-widget.html) |
+
+두 파일은 **문구만 다르고** 디자인·동작·접수 경로는 완전히 같습니다.
 
 ### (선택) 여러 페이지에서 쓸 경우
 
@@ -159,15 +165,33 @@ var CONFIG = {
 
 ## 색상·문구 바꾸기
 
-붙여넣은 코드 맨 위 `.atm-contact { … }` 안의 값만 고치면 전체에 반영됩니다.
+### 톤 전체를 바꾸려면
+
+섹션 태그의 `data-atm-theme` 값 하나만 고치면 됩니다.
+
+```html
+<section class="atm-contact" id="contact" data-atm-theme="dark">
+```
+
+`dark`(현재 기본) · `light` · `auto`(기기 설정을 따라감) 중에서 고르세요.
+
+### 색을 세밀하게 맞추려면
+
+붙여넣은 코드 맨 위 **테마 블록**의 값만 고치면 전체에 반영됩니다.
 
 ```css
---atm-accent: #14110F;   /* 버튼·포커스 색. 브랜드 컬러로 교체 */
---atm-paper:  #FBF9F6;   /* 섹션 배경 */
---atm-radius: 4px;       /* 0 = 각진 느낌, 12px = 둥근 느낌 */
---atm-field-h: 54px;     /* 입력칸 높이 */
+--atm-accent:  #D83426;  /* 버튼·선택 강조 = 브랜드 레드 */
+--atm-paper:   #0B0B0C;  /* 섹션 배경 */
+--atm-surface: #151517;  /* 폼 카드 배경 */
+--atm-field:   #1C1C1F;  /* 입력칸 배경 */
+--atm-radius:    10px;   /* 0 = 각진 느낌, 16px = 더 둥글게 */
+--atm-field-h:   56px;   /* 입력칸 높이 */
 --atm-sticky-top: 96px;  /* 상단 고정 헤더가 있으면 그 높이만큼 키우기 */
 ```
+
+> `--atm-accent` 를 바꾸실 때는 **버튼의 흰 글자가 읽히는지** 확인해 주세요.
+> 현재 값은 흰 글자 대비 4.73:1 로 접근성 기준(4.5:1)을 통과합니다.
+> 더 밝은 빨강은 기준에 못 미칠 수 있습니다.
 
 제목·소개문·연락처는 `src/contact-section.html` 에서 수정한 뒤 `node build.js` 를 실행하세요.
 현재 반영된 연락처는 아래와 같습니다.

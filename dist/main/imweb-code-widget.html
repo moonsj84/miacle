@@ -1,15 +1,20 @@
 <!-- ==========================================================================
-     앳더모먼 CONTACT 입력폼  ·  아임웹 코드 위젯 붙여넣기용 (자동 생성 파일)
+     미아클 CONTACT 입력폼 — 홈페이지 메인  ·  아임웹 코드 위젯 붙여넣기용 (자동 생성)
      --------------------------------------------------------------------------
-     ⚠️ 이 파일을 직접 고치지 마세요. src/ 의 파일을 고친 뒤 `node build.js` 를 실행하세요.
+     ⚠️ 이 파일을 직접 고치지 마세요.
+        문구는 src/copy.json, 디자인은 src/contact-form.css 를 고친 뒤
+        `node build.js` 를 실행하면 이 파일이 다시 만들어집니다.
+
+     대상 페이지 : https://www.miacle.co.kr/
+     톤          : dark   (섹션 태그의 data-atm-theme 값으로 변경)
 
      설치
        1. 이 파일 전체를 복사합니다.
-       2. 아임웹 편집기에서 /atmoment 페이지 하단 CONTACT 자리에 [코드] 위젯을 추가하고
+       2. 아임웹 편집기에서 해당 페이지의 CONTACT 자리에 [코드] 위젯을 추가하고
           복사한 내용을 붙여넣습니다.
        3. 그 코드 위젯 "바로 아래"에 [입력폼] 위젯을 추가하고
           board_code = b202609115a34b122e2d20 인 입력폼을 선택합니다.
-       4. 저장 후 실제 페이지에서 확인합니다. (편집기 화면이 아닌 실제 페이지)
+       4. 저장 후 편집기가 아닌 "실제 페이지"에서 확인합니다.
      ========================================================================== -->
 
 <style>
@@ -30,38 +35,23 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   1. 디자인 토큰 — 브랜드 컬러/여백은 여기서만 바꾸면 전체에 반영됩니다.
+   1. 테마 — 여기 한 곳만 보시면 됩니다.
+
+   섹션 태그의 data-atm-theme 값으로 전체 톤이 바뀝니다.
+       data-atm-theme="dark"   어두운 톤  (기존 폼과 같은 계열 · 메인 기본값)
+       data-atm-theme="light"  밝은 톤
+       data-atm-theme="auto"   보는 사람의 기기 설정을 따라감
    -------------------------------------------------------------------------- */
+
+/* ── 공통 구조값 (테마와 무관) ─────────────────────────────────────── */
 .atm-contact {
-  /* 색상 --------------------------------------------------------------- */
-  --atm-ink:        #14110F;                 /* 본문 기본 먹색 */
-  --atm-ink-70:     rgba(20, 17, 15, 0.70);  /* 보조 텍스트 */
-  --atm-ink-45:     rgba(20, 17, 15, 0.45);  /* 플레이스홀더 / 캡션 */
-  --atm-line:       rgba(20, 17, 15, 0.16);  /* 입력칸 테두리 */
-  --atm-line-soft:  rgba(20, 17, 15, 0.08);  /* 구분선 */
-  --atm-paper:      #FBF9F6;                 /* 섹션 배경 (웜 오프화이트) */
-  --atm-surface:    #FFFFFF;                 /* 입력칸 배경 */
-  --atm-accent:     #14110F;                 /* 강조색 = 버튼/포커스 */
-  --atm-accent-ink: #FFFFFF;                 /* 강조색 위의 글자색 */
-  --atm-error:      #C0392B;
+  --atm-font: inherit;      /* 사이트 본문 폰트를 그대로 상속 */
+  --atm-radius:     10px;   /* 입력칸 모서리. 0 = 각진 느낌 */
+  --atm-pill:      999px;   /* 선택지 버튼 모서리 */
+  --atm-field-h:     56px;  /* 한 줄 입력칸 높이 */
+  --atm-gap:         18px;  /* 입력칸 사이 세로 간격 */
+  --atm-sticky-top:  96px;  /* 상단 고정 헤더가 있으면 그 높이만큼 키우기 */
 
-  /* ↓ 브랜드 컬러로 바꾸고 싶다면 위 --atm-accent 만 교체하세요. 예시:
-     --atm-accent: #A9703F;   (웜 테라코타)
-     --atm-accent: #2F4F4F;   (딥 그린)                                    */
-
-  /* 타이포 — 사이트 본문 폰트를 그대로 상속받아 이질감이 없도록 합니다. */
-  --atm-font: inherit;
-
-  /* 형태 --------------------------------------------------------------- */
-  --atm-radius:     4px;    /* 0 으로 두면 각진 에디토리얼 느낌 */
-  --atm-field-h:    54px;   /* 한 줄 입력칸 높이 */
-  --atm-gap:        18px;   /* 입력칸 사이 세로 간격 */
-
-  /* 데스크톱에서 왼쪽 안내가 따라 내려올 때 상단에서 띄울 거리.
-     상단 고정 헤더가 있다면 그 높이만큼 키워주세요. */
-  --atm-sticky-top: 96px;
-
-  /* 섹션 자체 --------------------------------------------------------- */
   position: relative;
   box-sizing: border-box;
   width: 100%;
@@ -71,6 +61,49 @@
   font-family: var(--atm-font);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ── 밝은 톤 (기본값) ──────────────────────────────────────────────── */
+.atm-contact,
+.atm-contact[data-atm-theme="light"] {
+  --atm-ink:        #14110F;
+  --atm-ink-70:     rgba(20, 17, 15, 0.70);
+  --atm-ink-45:     rgba(20, 17, 15, 0.45);
+  --atm-line:       rgba(20, 17, 15, 0.16);
+  --atm-line-soft:  rgba(20, 17, 15, 0.08);
+  --atm-paper:      #FBF9F6;   /* 섹션 배경 */
+  --atm-surface:    #FFFFFF;   /* 폼 카드 배경 */
+  --atm-field:      #FFFFFF;   /* 입력칸 배경 */
+  --atm-accent:     #14110F;
+  --atm-accent-ink: #FFFFFF;
+  --atm-error:      #C0392B;
+  --atm-shadow:     0 1px 2px rgba(20, 17, 15, 0.03),
+                    0 12px 32px -18px rgba(20, 17, 15, 0.18);
+  --atm-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2314110F' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+
+  /* 라디오·체크박스·셀렉트 목록 등 브라우저 기본 UI도 톤을 따르게 함 */
+  color-scheme: light;
+}
+
+/* ── 어두운 톤 ─────────────────────────────────────────────────────────
+   기존 아임웹 폼(어두운 배경 · 빨간 강조 · 알약 버튼)과 같은 계열입니다.
+   브랜드 레드가 정확히 다르면 --atm-accent 한 줄만 바꾸면 됩니다.        */
+.atm-contact[data-atm-theme="dark"] {
+  --atm-ink:        #F4F4F5;
+  --atm-ink-70:     rgba(244, 244, 245, 0.68);
+  --atm-ink-45:     rgba(244, 244, 245, 0.44);
+  --atm-line:       rgba(244, 244, 245, 0.18);
+  --atm-line-soft:  rgba(244, 244, 245, 0.09);
+  --atm-paper:      #0B0B0C;   /* 섹션 배경 */
+  --atm-surface:    #151517;   /* 폼 카드 배경 */
+  --atm-field:      #1C1C1F;   /* 입력칸 배경 — 카드보다 살짝 밝게 */
+  --atm-accent:     #D83426;   /* 흰 글자 대비 4.73:1 — WCAG AA 통과 */
+  --atm-accent-ink: #FFFFFF;
+  --atm-error:      #FF6B5C;
+  --atm-shadow:     0 1px 2px rgba(0, 0, 0, 0.4),
+                    0 18px 44px -22px rgba(0, 0, 0, 0.8);
+  --atm-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23F4F4F5' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  color-scheme: dark;
 }
 
 .atm-contact *,
@@ -201,8 +234,7 @@
   border: 1px solid var(--atm-line-soft);
   border-radius: calc(var(--atm-radius) * 2);
   padding: clamp(26px, 3.4vw, 44px);
-  box-shadow: 0 1px 2px rgba(20, 17, 15, 0.03),
-              0 12px 32px -18px rgba(20, 17, 15, 0.18);
+  box-shadow: var(--atm-shadow);
 }
 
 .atm-contact__panel-title {
@@ -376,7 +408,7 @@
   padding: 0 16px !important;
   border: 1px solid var(--atm-line) !important;
   border-radius: var(--atm-radius) !important;
-  background: var(--atm-surface) !important;
+  background: var(--atm-field) !important;
   color: var(--atm-ink) !important;
   font-family: inherit !important;
   font-size: 15px !important;
@@ -436,7 +468,7 @@
 /* 5-3. 셀렉트 화살표 ----------------------------------------------------- */
 .atm-contact__slot select {
   padding-right: 44px !important;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2314110F' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  background-image: var(--atm-arrow) !important;
   background-repeat: no-repeat !important;
   background-position: right 16px center !important;
   cursor: pointer;
@@ -469,8 +501,8 @@
   margin: 0 !important;
   padding: 11px 17px !important;
   border: 1px solid var(--atm-line) !important;
-  border-radius: 999px !important;
-  background: var(--atm-surface) !important;
+  border-radius: var(--atm-pill) !important;
+  background: var(--atm-field) !important;
   font-size: 14px !important;
   font-weight: 400 !important;
   line-height: 1.4 !important;
@@ -490,7 +522,7 @@
    별도 규칙으로 분리해 두었습니다. */
 .atm-contact__slot .atm-choice label:has(input:checked) {
   border-color: var(--atm-accent) !important;
-  background: color-mix(in srgb, var(--atm-accent) 7%, var(--atm-surface)) !important;
+  background: color-mix(in srgb, var(--atm-accent) 14%, var(--atm-field)) !important;
   color: var(--atm-ink) !important;
   font-weight: 500 !important;
 }
@@ -595,19 +627,21 @@
    -------------------------------------------------------------------------- */
 @media (prefers-color-scheme: dark) {
   .atm-contact[data-atm-theme="auto"] {
-    --atm-ink:        #F2EEE9;
-    --atm-ink-70:     rgba(242, 238, 233, 0.72);
-    --atm-ink-45:     rgba(242, 238, 233, 0.48);
-    --atm-line:       rgba(242, 238, 233, 0.22);
-    --atm-line-soft:  rgba(242, 238, 233, 0.12);
-    --atm-paper:      #16130F;
-    --atm-surface:    #1E1A16;
-    --atm-accent:     #F2EEE9;
-    --atm-accent-ink: #14110F;
-  }
-
-  .atm-contact[data-atm-theme="auto"] .atm-contact__slot select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23F2EEE9' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+    --atm-ink:        #F4F4F5;
+    --atm-ink-70:     rgba(244, 244, 245, 0.68);
+    --atm-ink-45:     rgba(244, 244, 245, 0.44);
+    --atm-line:       rgba(244, 244, 245, 0.18);
+    --atm-line-soft:  rgba(244, 244, 245, 0.09);
+    --atm-paper:      #0B0B0C;
+    --atm-surface:    #151517;
+    --atm-field:      #1C1C1F;
+    --atm-accent:     #D83426;   /* 흰 글자 대비 4.73:1 — WCAG AA 통과 */
+    --atm-accent-ink: #FFFFFF;
+    --atm-error:      #FF6B5C;
+    --atm-shadow:     0 1px 2px rgba(0, 0, 0, 0.4),
+                      0 18px 44px -22px rgba(0, 0, 0, 0.8);
+    --atm-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23F4F4F5' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    color-scheme: dark;
   }
 }
 
@@ -625,29 +659,26 @@
 </style>
 
 <!-- ==========================================================================
-     앳더모먼 (AT THE MOMENT) — CONTACT 섹션 마크업
+     미아클 — CONTACT 섹션 템플릿
+     치환 자리는 build.js 가 src/copy.json 의 문구로 채웁니다.
      --------------------------------------------------------------------------
      아임웹 "코드 위젯"에 붙여넣는 블록입니다.
      이 블록 바로 아래에 "입력폼 위젯"(board_code=b202609115a34b122e2d20)을 놓으면
      contact-form.js 가 폼을 아래 .atm-contact__slot 안으로 옮겨 넣습니다.
      ========================================================================== -->
 
-<section class="atm-contact" id="contact" aria-labelledby="atm-contact-title">
+<!-- data-atm-theme: "dark" | "light" | "auto"  ← 이 값만 바꾸면 전체 톤이 바뀝니다. -->
+<section class="atm-contact" id="contact" data-atm-theme="dark"
+         aria-labelledby="atm-contact-title">
   <div class="atm-contact__inner">
 
     <!-- ── 왼쪽: 안내 + 직접 연락처 ───────────────────────────────────── -->
     <div class="atm-contact__aside">
       <span class="atm-contact__eyebrow">Contact</span>
 
-      <h2 class="atm-contact__title" id="atm-contact-title">
-        당신의 순간을<br>함께 설계하겠습니다
-      </h2>
+      <h2 class="atm-contact__title" id="atm-contact-title">당신의 비즈니스가<br>기적이 되도록</h2>
 
-      <p class="atm-contact__lead">
-        브랜딩과 마케팅부터 사진·영상 촬영, 행사·전시 기획과 공간 스타일링까지.
-        아직 정리되지 않은 구상이어도 괜찮습니다. 편하게 남겨주시면 담당자가 내용을
-        확인한 뒤 <strong>영업일 1~2일 이내</strong>에 연락드립니다.
-      </p>
+      <p class="atm-contact__lead">브랜드 기획과 마케팅, 사진·영상 제작, 공간과 경험 설계까지. 미아클은 브랜드에 필요한 모든 단계를 함께합니다. 아직 정리되지 않은 구상이어도 괜찮습니다. 편하게 남겨주시면 담당자가 내용을 확인한 뒤 <strong>영업일 1~2일 이내</strong>에 연락드립니다.</p>
 
       <dl class="atm-contact__info">
 
@@ -680,9 +711,7 @@
     <!-- ── 오른쪽: 입력폼이 들어앉는 카드 ─────────────────────────────── -->
     <div class="atm-contact__panel">
       <h3 class="atm-contact__panel-title">프로젝트 문의하기</h3>
-      <p class="atm-contact__panel-desc">
-        아래 항목을 작성해 주시면 상담을 준비해 연락드립니다.
-      </p>
+      <p class="atm-contact__panel-desc">아래 항목을 작성해 주시면 상담을 준비해 연락드립니다.</p>
 
       <!-- 필수/선택 범례 — 폼 위에 항상 보이도록 둡니다. -->
       <p class="atm-contact__legend">
