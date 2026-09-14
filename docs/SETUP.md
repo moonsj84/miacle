@@ -105,12 +105,18 @@
 
 페이지에 맞는 파일 **전체**를 복사해 2단계에서 만든 **코드 위젯**에 붙여넣고 저장합니다.
 
-| 페이지 | 파일 |
-|---|---|
-| 홈페이지 메인 | [`dist/main/imweb-code-widget.html`](../dist/main/imweb-code-widget.html) |
-| 앳더모먼 | [`dist/atmoment/imweb-code-widget.html`](../dist/atmoment/imweb-code-widget.html) |
+| 페이지 | 붙여넣을 파일 | 여백 | 상태 |
+|---|---|---|---|
+| 홈페이지 메인 | `dist/main/imweb-code-widget.html` | full | 승인 완료 |
+| 공통 (나머지 전 페이지) | `dist/common/imweb-code-widget.html` | compact | 권장 기본값 |
+| 앳더모먼 | `dist/atmoment/imweb-code-widget.html` | compact | 적용 대상 |
+| 마이리얼뮤지엄 | `dist/myrealmuseum/imweb-code-widget.html` | compact | 문구 초안 |
+| 북클럽다이브 | `dist/bookclubdive/imweb-code-widget.html` | compact | 문구 초안 |
+| 멜트러쉬 | `dist/meltrush/imweb-code-widget.html` | compact | 문구 초안 |
 
-두 파일은 **문구만 다르고** 디자인·동작·접수 경로는 완전히 같습니다.
+**공통** 파일 하나면 하단 CONTACT가 들어가는 모든 페이지를 덮을 수 있습니다.
+브랜드 페이지마다 문구를 다르게 하고 싶을 때만 아래 브랜드별 파일을 쓰세요.
+어느 쪽이든 **디자인·동작·접수 경로는 완전히 같고, 문구와 여백만 다릅니다.**
 
 ### (선택) 여러 페이지에서 쓸 경우
 
@@ -122,6 +128,14 @@ CSS·JS를 사이트 공통 코드로 빼면 페이지마다 중복되지 않습
 2. 각 페이지의 코드 위젯에는 `src/contact-section.html`만 넣습니다.
 
 ---
+
+### 여러 페이지에 적용할 때
+
+입력폼은 **하나(`b202609115a34b122e2d20`)를 그대로 공유**합니다.
+페이지를 늘려도 관리자 화면은 그대로 한 곳이고, 어느 페이지에서 들어온 문의인지는
+아임웹 입력폼의 접수 목록에서 유입 페이지로 확인할 수 있습니다.
+
+페이지마다 할 일은 2단계(위젯 2개 배치) + 3단계(코드 붙여넣기) 반복이 전부입니다.
 
 ## 4단계 · 확인
 

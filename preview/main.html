@@ -138,6 +138,14 @@
   .atm-contact *::after { box-sizing: border-box; }
 
 
+  /* ── 크기 옵션 ─────────────────────────────────────────────────────────
+     data-atm-size="compact" 는 하단(푸터) CONTACT용으로 상하 여백을 줄입니다.
+     값이 없으면 메인처럼 넉넉한 기본 여백을 씁니다.                        */
+  .atm-contact[data-atm-size="compact"] {
+    padding-block: clamp(44px, 6vw, 78px);
+  }
+
+
   /* --------------------------------------------------------------------------
      2. 레이아웃 — 왼쪽 안내 / 오른쪽 폼 2단, 모바일에서는 1단으로 쌓임
      -------------------------------------------------------------------------- */
@@ -695,7 +703,7 @@
     <button type="button" data-pv-theme="auto"  aria-pressed="false">자동</button>
   </div>
   <span class="pv-note">데모입니다 — 실제 접수는 아임웹 입력폼(b202609115a34b122e2d20)으로 전송됩니다.</span>
-  <a href="atmoment.html">앳더모먼 보기 →</a>
+  <a href="common.html">공통 (나머지 전 페이지) 보기 →</a> <a href="atmoment.html">앳더모먼 보기 →</a> <a href="myrealmuseum.html">마이리얼뮤지엄 보기 →</a> <a href="bookclubdive.html">북클럽다이브 보기 →</a> <a href="meltrush.html">멜트러쉬 보기 →</a>
 </div>
 
 <div class="pv-above"><p>… 홈페이지 메인 …</p></div>
@@ -709,8 +717,10 @@
      contact-form.js 가 폼을 아래 .atm-contact__slot 안으로 옮겨 넣습니다.
      ========================================================================== -->
 
-<!-- data-atm-theme: "dark" | "light" | "auto"  ← 이 값만 바꾸면 전체 톤이 바뀝니다. -->
-<section class="atm-contact" id="contact" data-atm-theme="dark"
+<!-- data-atm-theme : "dark" | "light" | "auto"     ← 전체 톤
+     data-atm-size  : "full" | "compact"             ← 상하 여백 (하단 CONTACT는 compact) -->
+<section class="atm-contact" id="contact"
+         data-atm-theme="dark" data-atm-size="full"
          aria-labelledby="atm-contact-title">
   <div class="atm-contact__inner">
 

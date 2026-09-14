@@ -29,6 +29,7 @@ const COPY     = JSON.parse(read('src/copy.json'));
 
 const fill = (tpl, c) => tpl
   .replace(/\{\{THEME\}\}/g,       c.theme)
+  .replace(/\{\{SIZE\}\}/g,        c.size || 'full')
   .replace(/\{\{EYEBROW\}\}/g,     c.eyebrow)
   .replace(/\{\{TITLE\}\}/g,       c.title)
   .replace(/\{\{LEAD\}\}/g,        c.lead)
@@ -114,6 +115,7 @@ function buildWidget(c, section) {
 
      대상 페이지 : ${c.target}
      톤          : ${c.theme}   (섹션 태그의 data-atm-theme 값으로 변경)
+     여백        : ${c.size}   (full = 메인용 넉넉하게 / compact = 하단 CONTACT용)
 
      설치
        1. 이 파일 전체를 복사합니다.

@@ -7,6 +7,7 @@
 
      대상 페이지 : https://www.miacle.co.kr/atmoment
      톤          : dark   (섹션 태그의 data-atm-theme 값으로 변경)
+     여백        : compact   (full = 메인용 넉넉하게 / compact = 하단 CONTACT용)
 
      설치
        1. 이 파일 전체를 복사합니다.
@@ -109,6 +110,14 @@
 .atm-contact *,
 .atm-contact *::before,
 .atm-contact *::after { box-sizing: border-box; }
+
+
+/* ── 크기 옵션 ─────────────────────────────────────────────────────────
+   data-atm-size="compact" 는 하단(푸터) CONTACT용으로 상하 여백을 줄입니다.
+   값이 없으면 메인처럼 넉넉한 기본 여백을 씁니다.                        */
+.atm-contact[data-atm-size="compact"] {
+  padding-block: clamp(44px, 6vw, 78px);
+}
 
 
 /* --------------------------------------------------------------------------
@@ -667,8 +676,10 @@
      contact-form.js 가 폼을 아래 .atm-contact__slot 안으로 옮겨 넣습니다.
      ========================================================================== -->
 
-<!-- data-atm-theme: "dark" | "light" | "auto"  ← 이 값만 바꾸면 전체 톤이 바뀝니다. -->
-<section class="atm-contact" id="contact" data-atm-theme="dark"
+<!-- data-atm-theme : "dark" | "light" | "auto"     ← 전체 톤
+     data-atm-size  : "full" | "compact"             ← 상하 여백 (하단 CONTACT는 compact) -->
+<section class="atm-contact" id="contact"
+         data-atm-theme="dark" data-atm-size="compact"
          aria-labelledby="atm-contact-title">
   <div class="atm-contact__inner">
 

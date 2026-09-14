@@ -7,8 +7,10 @@
      contact-form.js 가 폼을 아래 .atm-contact__slot 안으로 옮겨 넣습니다.
      ========================================================================== -->
 
-<!-- data-atm-theme: "dark" | "light" | "auto"  ← 이 값만 바꾸면 전체 톤이 바뀝니다. -->
-<section class="atm-contact" id="contact" data-atm-theme="{{THEME}}"
+<!-- data-atm-theme : "dark" | "light" | "auto"     ← 전체 톤
+     data-atm-size  : "full" | "compact"             ← 상하 여백 (하단 CONTACT는 compact) -->
+<section class="atm-contact" id="contact"
+         data-atm-theme="{{THEME}}" data-atm-size="{{SIZE}}"
          aria-labelledby="atm-contact-title">
   <div class="atm-contact__inner">
 
