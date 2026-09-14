@@ -1,0 +1,955 @@
+<!-- ==========================================================================
+     앳더모먼 CONTACT 입력폼  ·  아임웹 코드 위젯 붙여넣기용 (자동 생성 파일)
+     --------------------------------------------------------------------------
+     ⚠️ 이 파일을 직접 고치지 마세요. src/ 의 파일을 고친 뒤 `node build.js` 를 실행하세요.
+
+     설치
+       1. 이 파일 전체를 복사합니다.
+       2. 아임웹 편집기에서 /atmoment 페이지 하단 CONTACT 자리에 [코드] 위젯을 추가하고
+          복사한 내용을 붙여넣습니다.
+       3. 그 코드 위젯 "바로 아래"에 [입력폼] 위젯을 추가하고
+          board_code = b202609115a34b122e2d20 인 입력폼을 선택합니다.
+       4. 저장 후 실제 페이지에서 확인합니다. (편집기 화면이 아닌 실제 페이지)
+     ========================================================================== -->
+
+<style>
+/* ==========================================================================
+   앳더모먼 (AT THE MOMENT) — CONTACT 입력폼 스타일
+   --------------------------------------------------------------------------
+   대상  : https://www.miacle.co.kr/atmoment 하단 CONTACT 영역
+   연동  : 아임웹 입력폼 board_code = b202609115a34b122e2d20
+   사용법: 아임웹 관리자 > 디자인 > 디자인 설정 > CSS 직접 입력 에 붙여넣기
+           (또는 SEO/헤더설정 > 공통 HTML 에 <style> 로 삽입)
+
+   설계 원칙
+   1) 아임웹 "입력폼 위젯"의 내부 DOM(클래스명)은 업데이트로 바뀔 수 있으므로
+      클래스명에 의존하지 않고 .atm-contact 범위 안의 "요소 타입"으로 스타일링한다.
+      (input / textarea / select / button)
+   2) 아임웹 테마 CSS의 우선순위가 높아 핵심 시각 속성에만 !important 를 사용한다.
+   3) CSS 가 일부 적용되지 않아도 폼 자체는 항상 정상 동작한다. (점진적 향상)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. 디자인 토큰 — 브랜드 컬러/여백은 여기서만 바꾸면 전체에 반영됩니다.
+   -------------------------------------------------------------------------- */
+.atm-contact {
+  /* 색상 --------------------------------------------------------------- */
+  --atm-ink:        #14110F;                 /* 본문 기본 먹색 */
+  --atm-ink-70:     rgba(20, 17, 15, 0.70);  /* 보조 텍스트 */
+  --atm-ink-45:     rgba(20, 17, 15, 0.45);  /* 플레이스홀더 / 캡션 */
+  --atm-line:       rgba(20, 17, 15, 0.16);  /* 입력칸 테두리 */
+  --atm-line-soft:  rgba(20, 17, 15, 0.08);  /* 구분선 */
+  --atm-paper:      #FBF9F6;                 /* 섹션 배경 (웜 오프화이트) */
+  --atm-surface:    #FFFFFF;                 /* 입력칸 배경 */
+  --atm-accent:     #14110F;                 /* 강조색 = 버튼/포커스 */
+  --atm-accent-ink: #FFFFFF;                 /* 강조색 위의 글자색 */
+  --atm-error:      #C0392B;
+
+  /* ↓ 브랜드 컬러로 바꾸고 싶다면 위 --atm-accent 만 교체하세요. 예시:
+     --atm-accent: #A9703F;   (웜 테라코타)
+     --atm-accent: #2F4F4F;   (딥 그린)                                    */
+
+  /* 타이포 — 사이트 본문 폰트를 그대로 상속받아 이질감이 없도록 합니다. */
+  --atm-font: inherit;
+
+  /* 형태 --------------------------------------------------------------- */
+  --atm-radius:     4px;    /* 0 으로 두면 각진 에디토리얼 느낌 */
+  --atm-field-h:    54px;   /* 한 줄 입력칸 높이 */
+  --atm-gap:        18px;   /* 입력칸 사이 세로 간격 */
+
+  /* 데스크톱에서 왼쪽 안내가 따라 내려올 때 상단에서 띄울 거리.
+     상단 고정 헤더가 있다면 그 높이만큼 키워주세요. */
+  --atm-sticky-top: 96px;
+
+  /* 섹션 자체 --------------------------------------------------------- */
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  padding: clamp(56px, 9vw, 120px) 20px;
+  background: var(--atm-paper);
+  color: var(--atm-ink);
+  font-family: var(--atm-font);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.atm-contact *,
+.atm-contact *::before,
+.atm-contact *::after { box-sizing: border-box; }
+
+
+/* --------------------------------------------------------------------------
+   2. 레이아웃 — 왼쪽 안내 / 오른쪽 폼 2단, 모바일에서는 1단으로 쌓임
+   -------------------------------------------------------------------------- */
+.atm-contact__inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(40px, 6vw, 88px);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .atm-contact__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+}
+
+/* 폼이 길기 때문에, 데스크톱에서는 왼쪽 안내가 화면에 계속 머물도록 합니다.
+   (뷰포트가 낮으면 자동으로 일반 흐름처럼 동작합니다.) */
+@media (min-width: 901px) {
+  .atm-contact__aside {
+    position: sticky;
+    top: var(--atm-sticky-top);
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   3. 왼쪽 — 타이틀 / 소개 문구 / 직접 연락처
+   -------------------------------------------------------------------------- */
+.atm-contact__eyebrow {
+  display: inline-block;
+  margin: 0 0 18px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--atm-ink-45);
+}
+
+.atm-contact__title {
+  margin: 0 0 20px;
+  font-size: clamp(28px, 4.2vw, 44px);
+  font-weight: 700;
+  line-height: 1.28;
+  letter-spacing: -0.02em;
+  color: var(--atm-ink);
+  word-break: keep-all;   /* 한글 어절 단위 줄바꿈 */
+}
+
+.atm-contact__lead {
+  margin: 0 0 36px;
+  font-size: clamp(15px, 1.5vw, 17px);
+  line-height: 1.85;
+  color: var(--atm-ink-70);
+  word-break: keep-all;
+}
+
+/* 직접 연락처 목록 ------------------------------------------------------ */
+.atm-contact__info {
+  margin: 0;
+  padding: 28px 0 0;
+  border-top: 1px solid var(--atm-line-soft);
+  display: grid;
+  gap: 18px;
+}
+
+.atm-contact__info-row {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 16px;
+  align-items: baseline;
+  margin: 0;
+}
+
+.atm-contact__info-label {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--atm-ink-45);
+}
+
+.atm-contact__info-value {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--atm-ink);
+  word-break: keep-all;
+}
+
+.atm-contact__info-value a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid var(--atm-line);
+  transition: border-color 0.2s ease;
+}
+
+.atm-contact__info-value a:hover,
+.atm-contact__info-value a:focus-visible {
+  border-bottom-color: var(--atm-accent);
+}
+
+.atm-contact__info-sub {
+  display: block;
+  margin-top: 4px;
+  font-size: 13px;
+  color: var(--atm-ink-45);
+}
+
+
+/* --------------------------------------------------------------------------
+   4. 오른쪽 — 폼이 들어앉는 카드
+   .atm-contact__slot 안으로 아임웹 입력폼 위젯이 JS 에 의해 이동합니다.
+   -------------------------------------------------------------------------- */
+.atm-contact__panel {
+  background: var(--atm-surface);
+  border: 1px solid var(--atm-line-soft);
+  border-radius: calc(var(--atm-radius) * 2);
+  padding: clamp(26px, 3.4vw, 44px);
+  box-shadow: 0 1px 2px rgba(20, 17, 15, 0.03),
+              0 12px 32px -18px rgba(20, 17, 15, 0.18);
+}
+
+.atm-contact__panel-title {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--atm-ink);
+}
+
+.atm-contact__panel-desc {
+  margin: 0 0 26px;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--atm-ink-45);
+  word-break: keep-all;
+}
+
+/* 폼이 아직 이동해 오지 않았을 때 자리 표시 (로딩 스켈레톤) */
+.atm-contact__slot:empty::after {
+  content: "입력폼을 불러오는 중입니다…";
+  display: block;
+  padding: 40px 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--atm-ink-45);
+}
+
+
+/* ==========================================================================
+   5. 아임웹 네이티브 입력폼 위젯 리스타일
+   --------------------------------------------------------------------------
+   위젯 내부 클래스명에 의존하지 않기 위해 "요소 타입"으로 선택합니다.
+   ========================================================================== */
+
+/* 위젯 컨테이너가 가져오는 기본 여백/배경 제거 --------------------------- */
+.atm-contact__slot > *,
+.atm-contact__slot form {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* 위젯이 자체적으로 넣는 섹션 상하 패딩 무력화 */
+.atm-contact__slot .widget,
+.atm-contact__slot [class*="widget"] {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* 항목 사이 간격 --------------------------------------------------------- */
+.atm-contact__slot form > *,
+.atm-contact__slot form fieldset > * {
+  margin-bottom: var(--atm-gap) !important;
+}
+
+.atm-contact__slot form > *:last-child { margin-bottom: 0 !important; }
+
+/* 5-1. 항목명(라벨) ------------------------------------------------------ */
+.atm-contact__slot label,
+.atm-contact__slot legend,
+.atm-contact__slot [class*="tit"]:not(input):not(textarea):not(select) {
+  display: block;
+  margin-bottom: 8px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.005em;
+  line-height: 1.5;
+  color: var(--atm-ink) !important;
+}
+
+/* 체크박스/라디오 옆 라벨은 블록으로 만들지 않음.
+   :has() 는 구형 브라우저에서 규칙 전체를 무효화시키므로 별도 규칙으로 분리합니다. */
+.atm-contact__slot input[type="checkbox"] + label,
+.atm-contact__slot input[type="radio"] + label {
+  display: inline-flex !important;
+  align-items: flex-start;
+  gap: 9px;
+  margin-bottom: 0 !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: var(--atm-ink-70) !important;
+  cursor: pointer;
+}
+
+/* 라벨이 체크박스를 감싸는 형태 (<label><input type="checkbox"> …</label>) */
+.atm-contact__slot label:has(input[type="checkbox"]),
+.atm-contact__slot label:has(input[type="radio"]) {
+  display: inline-flex !important;
+  align-items: flex-start;
+  gap: 9px;
+  margin-bottom: 0 !important;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: var(--atm-ink-70) !important;
+  cursor: pointer;
+}
+
+/* 필수 표시(*) 강조 */
+.atm-contact__slot .required,
+.atm-contact__slot [class*="require"],
+.atm-contact__slot .necessary {
+  color: var(--atm-error) !important;
+  font-weight: 700;
+}
+
+/* 5-2. 입력칸 ------------------------------------------------------------ */
+.atm-contact__slot input[type="text"],
+.atm-contact__slot input[type="email"],
+.atm-contact__slot input[type="tel"],
+.atm-contact__slot input[type="url"],
+.atm-contact__slot input[type="number"],
+.atm-contact__slot input[type="date"],
+.atm-contact__slot input[type="time"],
+.atm-contact__slot input[type="password"],
+.atm-contact__slot input:not([type]),
+.atm-contact__slot select,
+.atm-contact__slot textarea {
+  width: 100% !important;
+  max-width: none !important;
+  padding: 0 16px !important;
+  border: 1px solid var(--atm-line) !important;
+  border-radius: var(--atm-radius) !important;
+  background: var(--atm-surface) !important;
+  color: var(--atm-ink) !important;
+  font-family: inherit !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  letter-spacing: -0.005em;
+  box-shadow: none !important;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.atm-contact__slot input[type="text"],
+.atm-contact__slot input[type="email"],
+.atm-contact__slot input[type="tel"],
+.atm-contact__slot input[type="url"],
+.atm-contact__slot input[type="number"],
+.atm-contact__slot input[type="date"],
+.atm-contact__slot input[type="time"],
+.atm-contact__slot input[type="password"],
+.atm-contact__slot input:not([type]),
+.atm-contact__slot select {
+  height: var(--atm-field-h) !important;
+}
+
+.atm-contact__slot textarea {
+  min-height: 150px !important;
+  padding: 15px 16px !important;
+  line-height: 1.75 !important;
+  resize: vertical;
+}
+
+/* iOS 확대 방지 — 모바일 입력 글꼴은 16px 이상이어야 합니다.
+   위의 `input[type="..."]` 규칙보다 특이도를 높여야 덮어쓸 수 있으므로
+   .atm-contact 를 한 번 더 붙입니다. */
+@media (max-width: 767px) {
+  .atm-contact .atm-contact__slot input[type],
+  .atm-contact .atm-contact__slot input,
+  .atm-contact .atm-contact__slot select,
+  .atm-contact .atm-contact__slot textarea { font-size: 16px !important; }
+}
+
+/* 플레이스홀더 */
+.atm-contact__slot ::placeholder { color: var(--atm-ink-45) !important; opacity: 1; }
+
+/* 포커스 — 접근성을 위해 테두리 + 링을 함께 표시 */
+.atm-contact__slot input:focus,
+.atm-contact__slot select:focus,
+.atm-contact__slot textarea:focus {
+  outline: none !important;
+  border-color: var(--atm-accent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--atm-accent) 14%, transparent) !important;
+}
+
+/* 키보드 포커스 시에는 항상 보이는 아웃라인 보장 */
+.atm-contact__slot :focus-visible { outline: 2px solid var(--atm-accent); outline-offset: 2px; }
+
+/* 5-3. 셀렉트 화살표 ----------------------------------------------------- */
+.atm-contact__slot select {
+  padding-right: 44px !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2314110F' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 16px center !important;
+  cursor: pointer;
+}
+
+/* 5-4. 체크박스 / 라디오 ------------------------------------------------- */
+.atm-contact__slot input[type="checkbox"],
+.atm-contact__slot input[type="radio"] {
+  flex: 0 0 auto;
+  width: 18px !important;
+  height: 18px !important;
+  margin: 2px 0 0 !important;
+  accent-color: var(--atm-accent);
+  cursor: pointer;
+}
+
+/* 5-5. 개인정보 동의 등 약관 박스 ---------------------------------------- */
+.atm-contact__slot [class*="agree"],
+.atm-contact__slot [class*="privacy"],
+.atm-contact__slot [class*="terms"] {
+  font-size: 14px !important;
+  color: var(--atm-ink-70) !important;
+}
+
+.atm-contact__slot textarea[readonly],
+.atm-contact__slot [class*="agree"] [class*="cont"],
+.atm-contact__slot [class*="terms"] [class*="cont"] {
+  /* 위 textarea 규칙의 min-height:150px 을 풀어야 max-height 가 적용됩니다.
+     (CSS 규격상 min-height 가 max-height 보다 우선하기 때문) */
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: 136px;
+  overflow-y: auto;
+  resize: none;
+  padding: 14px 16px !important;
+  border: 1px solid var(--atm-line-soft) !important;
+  border-radius: var(--atm-radius) !important;
+  background: var(--atm-paper) !important;
+  font-size: 13px !important;
+  line-height: 1.7 !important;
+  color: var(--atm-ink-45) !important;
+}
+
+/* 5-6. 제출 버튼 --------------------------------------------------------- */
+.atm-contact__slot button[type="submit"],
+.atm-contact__slot input[type="submit"],
+.atm-contact__slot button:not([type]),
+.atm-contact__slot [class*="btn"][class*="submit"],
+.atm-contact__slot a[class*="btn"] {
+  display: block !important;
+  width: 100% !important;
+  min-height: 58px !important;
+  margin-top: 10px !important;
+  padding: 0 24px !important;
+  border: 1px solid var(--atm-accent) !important;
+  border-radius: var(--atm-radius) !important;
+  background: var(--atm-accent) !important;
+  color: var(--atm-accent-ink) !important;
+  font-family: inherit !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.01em;
+  line-height: 58px !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.atm-contact__slot button[type="submit"]:hover,
+.atm-contact__slot input[type="submit"]:hover,
+.atm-contact__slot a[class*="btn"]:hover { opacity: 0.86; }
+
+.atm-contact__slot button[type="submit"]:active,
+.atm-contact__slot input[type="submit"]:active { transform: translateY(1px); }
+
+/* 제출 진행 중 (contact-form.js 가 부여) */
+.atm-contact__slot .atm-is-sending {
+  opacity: 0.6 !important;
+  pointer-events: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   6. contact-form.js 가 추가하는 보조 UI
+   -------------------------------------------------------------------------- */
+
+/* 글자 수 카운터 */
+.atm-counter {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  text-align: right;
+  color: var(--atm-ink-45);
+  font-variant-numeric: tabular-nums;
+}
+
+.atm-counter[data-over="true"] { color: var(--atm-error); }
+
+/* 하단 안내 문구 */
+.atm-contact__footnote {
+  margin: 18px 0 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--atm-ink-45);
+  word-break: keep-all;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. 다크 모드 대응 (사이트가 다크 테마를 지원할 경우에만 동작)
+   -------------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  .atm-contact[data-atm-theme="auto"] {
+    --atm-ink:        #F2EEE9;
+    --atm-ink-70:     rgba(242, 238, 233, 0.72);
+    --atm-ink-45:     rgba(242, 238, 233, 0.48);
+    --atm-line:       rgba(242, 238, 233, 0.22);
+    --atm-line-soft:  rgba(242, 238, 233, 0.12);
+    --atm-paper:      #16130F;
+    --atm-surface:    #1E1A16;
+    --atm-accent:     #F2EEE9;
+    --atm-accent-ink: #14110F;
+  }
+
+  .atm-contact[data-atm-theme="auto"] .atm-contact__slot select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23F2EEE9' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   8. 모션 최소화 선호 사용자 배려
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .atm-contact * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+</style>
+
+<!-- ==========================================================================
+     앳더모먼 (AT THE MOMENT) — CONTACT 섹션 마크업
+     --------------------------------------------------------------------------
+     아임웹 "코드 위젯"에 붙여넣는 블록입니다.
+     이 블록 바로 아래에 "입력폼 위젯"(board_code=b202609115a34b122e2d20)을 놓으면
+     contact-form.js 가 폼을 아래 .atm-contact__slot 안으로 옮겨 넣습니다.
+
+     ✏️ 표시가 있는 곳은 실제 정보로 교체해 주세요.
+     ========================================================================== -->
+
+<section class="atm-contact" id="contact" aria-labelledby="atm-contact-title">
+  <div class="atm-contact__inner">
+
+    <!-- ── 왼쪽: 안내 + 직접 연락처 ───────────────────────────────────── -->
+    <div class="atm-contact__aside">
+      <span class="atm-contact__eyebrow">Contact</span>
+
+      <h2 class="atm-contact__title" id="atm-contact-title">
+        당신의 순간을<br>함께 설계하겠습니다
+      </h2>
+
+      <p class="atm-contact__lead">
+        브랜딩과 마케팅부터 사진·영상 촬영, 행사·전시 기획과 공간 스타일링까지.
+        아직 정리되지 않은 구상이어도 괜찮습니다. 편하게 남겨주시면 담당자가 내용을
+        확인한 뒤 <strong>영업일 1~2일 이내</strong>에 연락드립니다.
+      </p>
+
+      <dl class="atm-contact__info">
+
+        <div class="atm-contact__info-row">
+          <dt class="atm-contact__info-label">Email</dt>
+          <dd class="atm-contact__info-value">
+            <!-- ✏️ 교체: 실제 문의 이메일 -->
+            <a href="mailto:hello@miacle.co.kr">hello@miacle.co.kr</a>
+          </dd>
+        </div>
+
+        <div class="atm-contact__info-row">
+          <dt class="atm-contact__info-label">Phone</dt>
+          <dd class="atm-contact__info-value">
+            <!-- ✏️ 교체: 실제 전화번호 (href 의 tel: 값도 함께 수정) -->
+            <a href="tel:+82540000000">054-000-0000</a>
+            <span class="atm-contact__info-sub">평일 10:00 – 18:00 (주말·공휴일 휴무)</span>
+          </dd>
+        </div>
+
+        <div class="atm-contact__info-row">
+          <dt class="atm-contact__info-label">Studio</dt>
+          <dd class="atm-contact__info-value">
+            <!-- ✏️ 교체: 실제 주소 -->
+            경상북도 포항시 북구 흥해읍
+            <span class="atm-contact__info-sub">방문 상담은 사전 예약제로 운영됩니다.</span>
+          </dd>
+        </div>
+
+      </dl>
+    </div>
+
+    <!-- ── 오른쪽: 입력폼이 들어앉는 카드 ─────────────────────────────── -->
+    <div class="atm-contact__panel">
+      <h3 class="atm-contact__panel-title">프로젝트 문의하기</h3>
+      <p class="atm-contact__panel-desc">
+        아래 항목을 작성해 주시면 상담을 준비해 연락드립니다.
+      </p>
+
+      <!-- 아임웹 입력폼 위젯이 이 안으로 이동합니다. 비워두세요. -->
+      <div class="atm-contact__slot"></div>
+
+      <p class="atm-contact__footnote">
+        보내주신 내용은 상담 목적으로만 사용되며, 목적 달성 후 지체 없이 파기합니다.
+        보다 빠른 상담이 필요하시면 전화 또는 이메일로 연락해 주세요.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<script>
+/* ==========================================================================
+   앳더모먼 (AT THE MOMENT) — CONTACT 입력폼 스크립트
+   --------------------------------------------------------------------------
+   하는 일
+   1) 페이지에 놓인 "아임웹 입력폼 위젯"을 찾아 CONTACT 섹션 안으로 이동시킵니다.
+      → 폼의 제출 로직은 아임웹 것을 그대로 쓰므로 접수 누락 위험이 없습니다.
+   2) 연락처 자동 하이픈, 문의내용 글자 수 카운터 등 입력 편의를 더합니다.
+   3) 제출 버튼 중복 클릭을 막습니다.
+
+   중요: 이 스크립트는 submit 을 가로채지(preventDefault) 않습니다.
+         스크립트가 실패해도 폼은 아임웹 기본 동작으로 정상 접수됩니다.
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  /* ----------------------------------------------------------------------
+     설정 — 자동 탐색이 실패할 때만 값을 채우세요.
+     ---------------------------------------------------------------------- */
+  var CONFIG = {
+    // 입력폼 위젯을 정확히 지정하고 싶을 때 CSS 선택자를 넣습니다.
+    // 예: '#form_b202609115a34b122e2d20' 또는 '.my-form-widget'
+    formSelector: '',
+
+    // 문의 내용(textarea) 권장 글자 수. 0 이면 카운터를 표시하지 않습니다.
+    counterMax: 1000,
+
+    // 위젯이 늦게 그려지는 경우를 대비한 최대 대기 시간(ms)
+    waitTimeout: 8000
+  };
+
+  var SLOT_SELECTOR    = '.atm-contact__slot';
+  var SECTION_SELECTOR = '.atm-contact';
+
+  /* ----------------------------------------------------------------------
+     유틸
+     ---------------------------------------------------------------------- */
+  function ready(fn) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fn, { once: true });
+    } else {
+      fn();
+    }
+  }
+
+  /** 요소에 연결된 라벨/주변 텍스트를 모아 반환 (필드 종류 추론용) */
+  function fieldContext(el) {
+    var parts = [
+      el.getAttribute('name')        || '',
+      el.getAttribute('placeholder') || '',
+      el.getAttribute('title')       || '',
+      el.getAttribute('id')          || ''
+    ];
+
+    if (el.id) {
+      var lab = document.querySelector('label[for="' + CSS.escape(el.id) + '"]');
+      if (lab) parts.push(lab.textContent);
+    }
+
+    var wrap = el.closest('li, .form_element, .form_item, [class*="element"], [class*="item"], div');
+    if (wrap) parts.push(wrap.textContent.slice(0, 120));
+
+    return parts.join(' ').toLowerCase();
+  }
+
+  /* ----------------------------------------------------------------------
+     1. 아임웹 입력폼 위젯 찾기
+     ---------------------------------------------------------------------- */
+
+  /** 이 form 이 우리가 찾는 "문의 입력폼"인지 점수로 판단 */
+  function scoreForm(form) {
+    // CONTACT 섹션 안에 이미 들어와 있으면 대상 아님
+    if (form.closest(SECTION_SELECTOR)) return -1;
+
+    // 헤더/내비/검색 영역의 폼은 제외
+    if (form.closest('header, nav, [class*="header"], [class*="gnb"], [class*="search"]')) return -1;
+
+    // 로그인/검색 성격의 폼 제외
+    if (form.querySelector('input[type="password"], input[type="search"]')) return -1;
+
+    var textLike = form.querySelectorAll(
+      'input[type="text"], input[type="email"], input[type="tel"], input:not([type]), textarea, select'
+    ).length;
+
+    if (textLike < 2) return -1;
+
+    var score = textLike;
+    if (form.querySelector('textarea')) score += 4;                       // 문의 내용
+    if (form.querySelector('input[type="email"], input[type="tel"]')) score += 3;
+    if (form.querySelector('input[type="checkbox"]')) score += 2;         // 개인정보 동의
+    if (/문의|신청|contact|inquiry|상담/i.test(form.textContent)) score += 5;
+
+    return score;
+  }
+
+  /** 위젯 컨테이너(아임웹이 감싼 바깥 박스)까지 올라가서 반환 */
+  function widgetContainerOf(form) {
+    var node = form;
+    var hops = 0;
+
+    while (node.parentElement && hops < 4) {
+      var parent = node.parentElement;
+
+      // 위젯 래퍼로 보이면 그것을 옮긴다
+      if (parent !== document.body &&
+          /widget|form/i.test(parent.className || '') &&
+          parent.querySelectorAll('form').length === 1) {
+        node = parent;
+        hops++;
+        continue;
+      }
+      break;
+    }
+
+    return node;
+  }
+
+  function findFormWidget() {
+    if (CONFIG.formSelector) {
+      var picked = document.querySelector(CONFIG.formSelector);
+      if (picked) {
+        var innerForm = picked.matches('form') ? picked : picked.querySelector('form');
+        return innerForm ? widgetContainerOf(innerForm) : picked;
+      }
+    }
+
+    var best = null;
+    var bestScore = 0;
+
+    Array.prototype.forEach.call(document.querySelectorAll('form'), function (form) {
+      var s = scoreForm(form);
+      if (s > bestScore) { bestScore = s; best = form; }
+    });
+
+    return best ? widgetContainerOf(best) : null;
+  }
+
+  /* ----------------------------------------------------------------------
+     2. 폼을 CONTACT 섹션 안으로 이동
+     ---------------------------------------------------------------------- */
+
+  /** 폼이 빠져나간 뒤 껍데기만 남은 컨테이너를 접어 여백이 뜨지 않게 함 */
+  function collapseLeftovers(startEl) {
+    var node = startEl;
+    var hops = 0;
+
+    while (node && node !== document.body && hops < 3) {
+      var next = node.parentElement;
+      var hasContent = node.textContent.trim() !== '' ||
+                       node.querySelector('img, svg, video, iframe, input, form');
+
+      if (!hasContent) node.style.display = 'none';
+
+      node = next;
+      hops++;
+    }
+  }
+
+  function mountForm(slot, widget) {
+    if (!slot || !widget || slot.contains(widget)) return false;
+
+    var origin = widget.parentElement;
+    slot.appendChild(widget);              // 같은 노드를 옮기므로 이벤트 핸들러는 유지됩니다.
+    if (origin) collapseLeftovers(origin);
+
+    slot.setAttribute('data-atm-mounted', 'true');
+    return true;
+  }
+
+  /* ----------------------------------------------------------------------
+     3. 입력 편의 기능
+     ---------------------------------------------------------------------- */
+
+  /** 국내 전화번호 자동 하이픈 (02-1234-5678 / 010-1234-5678 / 1588-0000) */
+  function formatPhone(raw) {
+    var d = raw.replace(/\D/g, '').slice(0, 11);
+    if (!d) return '';
+
+    if (d.startsWith('02')) {                       // 서울 지역번호
+      if (d.length < 3)  return d;
+      if (d.length < 7)  return d.slice(0, 2) + '-' + d.slice(2);
+      if (d.length < 10) return d.slice(0, 2) + '-' + d.slice(2, 5) + '-' + d.slice(5);
+      return d.slice(0, 2) + '-' + d.slice(2, 6) + '-' + d.slice(6, 10);
+    }
+
+    // 1588 / 1544 등 대표번호 (지역번호 없이 8자리)
+    if (/^1[0-9]{3}$/.test(d.slice(0, 4)) && !d.startsWith('10') && d.length <= 8) {
+      if (d.length < 5) return d;
+      return d.slice(0, 4) + '-' + d.slice(4);
+    }
+
+    if (d.length < 4)  return d;
+    if (d.length < 8)  return d.slice(0, 3) + '-' + d.slice(3);
+    return d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7, 11);
+  }
+
+  function enhancePhone(input) {
+    if (input.dataset.atmPhone) return;
+    input.dataset.atmPhone = '1';
+
+    input.setAttribute('inputmode', 'numeric');
+    if (!input.getAttribute('placeholder')) {
+      input.setAttribute('placeholder', '010-0000-0000');
+    }
+
+    input.addEventListener('input', function () {
+      var atEnd = input.selectionStart === input.value.length;
+      var next  = formatPhone(input.value);
+      if (next === input.value) return;
+
+      input.value = next;
+      if (atEnd) {
+        // 커서를 항상 끝에 유지 (하이픈 삽입으로 커서가 튀는 것 방지)
+        try { input.setSelectionRange(next.length, next.length); } catch (e) {}
+      }
+    });
+  }
+
+  function enhanceEmail(input) {
+    input.setAttribute('inputmode', 'email');
+    input.setAttribute('autocapitalize', 'off');
+    input.setAttribute('spellcheck', 'false');
+    if (!input.getAttribute('placeholder')) {
+      input.setAttribute('placeholder', 'name@example.com');
+    }
+  }
+
+  /** 문의 내용 글자 수 카운터 */
+  function enhanceTextarea(ta) {
+    if (!CONFIG.counterMax || ta.readOnly || ta.dataset.atmCounter) return;
+    ta.dataset.atmCounter = '1';
+
+    var counter = document.createElement('span');
+    counter.className = 'atm-counter';
+
+    var render = function () {
+      var n = ta.value.length;
+      counter.textContent = n.toLocaleString('ko-KR') + ' / ' +
+                            CONFIG.counterMax.toLocaleString('ko-KR') + '자';
+      counter.setAttribute('data-over', String(n > CONFIG.counterMax));
+    };
+
+    ta.addEventListener('input', render);
+    render();
+
+    if (ta.parentElement) ta.parentElement.appendChild(counter);
+  }
+
+  /** 제출 버튼 중복 클릭 방지 (submit 은 그대로 진행시킴) */
+  function guardSubmit(root) {
+    var form = root.matches('form') ? root : root.querySelector('form');
+    if (!form || form.dataset.atmGuard) return;
+    form.dataset.atmGuard = '1';
+
+    form.addEventListener('submit', function () {
+      var btn = form.querySelector('button[type="submit"], input[type="submit"]');
+      if (!btn) return;
+
+      btn.classList.add('atm-is-sending');
+
+      // 아임웹의 유효성 검사에 걸려 실제 전송이 되지 않았을 수 있으므로
+      // 일정 시간 뒤 반드시 원상복구합니다. (버튼이 영영 잠기는 것 방지)
+      setTimeout(function () { btn.classList.remove('atm-is-sending'); }, 6000);
+    });
+  }
+
+  function enhance(root) {
+    Array.prototype.forEach.call(
+      root.querySelectorAll('input, textarea, select'),
+      function (el) {
+        if (el.type === 'hidden' || el.type === 'submit' || el.type === 'button') return;
+
+        var ctx = fieldContext(el);
+
+        if (el.tagName === 'TEXTAREA') {
+          enhanceTextarea(el);
+          return;
+        }
+
+        if (el.type === 'email' || /이메일|e-?mail/.test(ctx)) {
+          enhanceEmail(el);
+          return;
+        }
+
+        if (el.type === 'tel' || /연락처|전화|휴대|핸드폰|phone|mobile|tel/.test(ctx)) {
+          enhancePhone(el);
+        }
+      }
+    );
+
+    guardSubmit(root);
+  }
+
+  /* ----------------------------------------------------------------------
+     4. 실행
+     ---------------------------------------------------------------------- */
+  function init() {
+    var slot = document.querySelector(SLOT_SELECTOR);
+    if (!slot) return;                       // CONTACT 섹션이 없는 페이지 → 아무것도 안 함
+    if (slot.getAttribute('data-atm-mounted')) return;
+
+    var widget = findFormWidget();
+
+    if (widget) {
+      mountForm(slot, widget);
+      enhance(slot);
+      return true;
+    }
+
+    return false;
+  }
+
+  ready(function () {
+    if (init()) return;
+
+    // 위젯이 비동기로 그려지는 경우를 대비해 잠시 지켜봅니다.
+    var observer = new MutationObserver(function () {
+      if (init()) stop();
+    });
+
+    var stop = function () {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    var timer = setTimeout(function () {
+      observer.disconnect();
+      // 끝내 못 찾으면 안내 문구를 지워 빈 카드로 남지 않게 합니다.
+      var slot = document.querySelector(SLOT_SELECTOR);
+      if (slot && !slot.getAttribute('data-atm-mounted')) {
+        slot.innerHTML = '<p class="atm-contact__footnote">입력폼을 불러오지 못했습니다. ' +
+                         '아래 연락처로 문의해 주세요.</p>';
+      }
+    }, CONFIG.waitTimeout);
+  });
+})();
+
+</script>
