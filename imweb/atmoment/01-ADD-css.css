@@ -1,0 +1,239 @@
+/* ══════════════════════════════════════════════════════════════════════
+   [추가] 아임웹 입력폼 연동 스타일
+   ----------------------------------------------------------------------
+   붙여넣을 위치: 코드 에디터의 스타일 블록 맨 끝
+                  (닫는 style 태그 바로 윗줄)
+   (기존 CSS는 하나도 지우지 마세요. 이 블록만 추가합니다.)
+
+   기존 .cf-* 디자인을 그대로 재현하되, 아임웹 입력폼 위젯이 어떤
+   클래스명을 쓰든 적용되도록 "요소 타입"으로 스타일을 겁니다.
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* 위젯이 들어오기 전 자리표시 */
+#atm-root .cf-imweb-slot:empty::before {
+  content: '입력폼을 불러오는 중입니다…';
+  display: block;
+  padding: 60px 20px;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.02);
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255,255,255,0.3);
+}
+
+/* 아임웹 위젯 컨테이너의 기본 여백·배경 제거 */
+#atm-root .cf-imweb-slot > *,
+#atm-root .cf-imweb-slot form {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  background: transparent !important;
+  border: 0 !important;
+}
+
+/* 항목 묶음을 기존 .cf-section 카드처럼 */
+#atm-root .cf-imweb-slot form > * {
+  margin-bottom: 14px !important;
+}
+#atm-root .cf-imweb-slot form > *:last-child { margin-bottom: 0 !important; }
+
+/* ── 항목명 → .form-label ── */
+#atm-root .cf-imweb-slot label,
+#atm-root .cf-imweb-slot legend,
+#atm-root .cf-imweb-slot [class*="tit"]:not(input):not(select):not(textarea) {
+  display: block;
+  margin-bottom: 7px !important;
+  font-family: var(--font-kr) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.7) !important;
+}
+
+/* 필수 표시 */
+#atm-root .cf-imweb-slot .required,
+#atm-root .cf-imweb-slot [class*="require"],
+#atm-root .cf-imweb-slot .necessary {
+  margin-left: 3px;
+  color: var(--red) !important;
+  font-weight: 700 !important;
+}
+
+/* '선택' 배지 — 스크립트가 필수가 아닌 항목에 붙입니다 */
+#atm-root .cf-opt {
+  display: inline-block;
+  margin-left: 7px;
+  padding: 1px 7px;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: rgba(255,255,255,0.4);
+  vertical-align: 1px;
+}
+
+/* ── 입력칸 → .form-field ── */
+#atm-root .cf-imweb-slot input[type="text"],
+#atm-root .cf-imweb-slot input[type="email"],
+#atm-root .cf-imweb-slot input[type="tel"],
+#atm-root .cf-imweb-slot input[type="url"],
+#atm-root .cf-imweb-slot input[type="number"],
+#atm-root .cf-imweb-slot input[type="date"],
+#atm-root .cf-imweb-slot input:not([type]),
+#atm-root .cf-imweb-slot select,
+#atm-root .cf-imweb-slot textarea {
+  width: 100% !important;
+  padding: 12px 14px !important;
+  border: 1px solid rgba(255,255,255,0.09) !important;
+  border-radius: 8px !important;
+  background: rgba(255,255,255,0.04) !important;
+  font-family: var(--font-kr) !important;
+  font-size: 14px !important;
+  color: var(--white) !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: border-color 0.22s, background 0.22s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+#atm-root .cf-imweb-slot textarea {
+  min-height: 90px !important;
+  line-height: 1.6 !important;
+  resize: vertical;
+}
+
+#atm-root .cf-imweb-slot input:focus,
+#atm-root .cf-imweb-slot select:focus,
+#atm-root .cf-imweb-slot textarea:focus {
+  border-color: rgba(214,40,40,0.6) !important;
+  background: rgba(214,40,40,0.04) !important;
+}
+
+#atm-root .cf-imweb-slot ::placeholder { color: rgba(255,255,255,0.2) !important; }
+
+/* 셀렉트 화살표 */
+#atm-root .cf-imweb-slot select {
+  padding-right: 40px !important;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23ffffff' stroke-opacity='0.55' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 14px center !important;
+}
+
+/* ── 선택지 → 기존 .cf-check-label / .cf-radio-label 알약 버튼 ── */
+#atm-root .cf-imweb-slot .cf-choice {
+  display: flex !important;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+#atm-root .cf-imweb-slot .cf-choice label {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+  margin: 0 !important;
+  padding: 8px 16px !important;
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  border-radius: 100px !important;
+  background: transparent !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0;
+  color: rgba(255,255,255,0.5) !important;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+#atm-root .cf-imweb-slot .cf-choice label:hover {
+  border-color: rgba(214,40,40,0.4) !important;
+  color: rgba(255,255,255,0.8) !important;
+}
+#atm-root .cf-imweb-slot .cf-choice label:has(input:checked) {
+  background: rgba(214,40,40,0.15) !important;
+  border-color: var(--red) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+}
+#atm-root .cf-imweb-slot input[type="checkbox"],
+#atm-root .cf-imweb-slot input[type="radio"] {
+  flex: 0 0 auto;
+  width: 15px !important;
+  height: 15px !important;
+  margin: 0 !important;
+  accent-color: var(--red);
+  cursor: pointer;
+}
+
+/* ── 약관/개인정보 동의 박스 ── */
+#atm-root .cf-imweb-slot textarea[readonly],
+#atm-root .cf-imweb-slot [class*="agree"] [class*="cont"],
+#atm-root .cf-imweb-slot [class*="terms"] [class*="cont"] {
+  min-height: 0 !important;
+  height: auto !important;
+  max-height: 120px;
+  overflow-y: auto;
+  padding: 12px 14px !important;
+  border: 1px solid rgba(255,255,255,0.07) !important;
+  border-radius: 8px !important;
+  background: rgba(255,255,255,0.02) !important;
+  font-size: 12px !important;
+  line-height: 1.75 !important;
+  color: rgba(255,255,255,0.35) !important;
+  resize: none;
+}
+
+/* ── 제출 버튼 → .form-submit ── */
+#atm-root .cf-imweb-slot button[type="submit"],
+#atm-root .cf-imweb-slot input[type="submit"],
+#atm-root .cf-imweb-slot a[class*="btn"] {
+  display: block !important;
+  width: 100% !important;
+  margin-top: 8px !important;
+  padding: 17px !important;
+  border: none !important;
+  border-radius: 10px !important;
+  background: var(--white) !important;
+  color: var(--black) !important;
+  font-family: var(--font-kr) !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em;
+  text-align: center !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+  transition: all 0.25s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+#atm-root .cf-imweb-slot button[type="submit"]:hover,
+#atm-root .cf-imweb-slot input[type="submit"]:hover,
+#atm-root .cf-imweb-slot a[class*="btn"]:hover {
+  background: var(--red) !important;
+  color: var(--white) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 28px rgba(214,40,40,0.3);
+}
+
+/* 글자 수 카운터 */
+#atm-root .cf-counter {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+  text-align: right;
+  color: rgba(255,255,255,0.28);
+}
+
+/* 모바일 — iOS 자동 확대 방지 */
+@media (max-width: 768px) {
+  /* 위의 input[type="..."] 규칙보다 특이도를 높여야 덮어씁니다.
+     (클래스를 한 번 더 붙여 우선순위를 올림) */
+  #atm-root .cf-imweb-slot.cf-imweb-slot input[type],
+  #atm-root .cf-imweb-slot.cf-imweb-slot input,
+  #atm-root .cf-imweb-slot.cf-imweb-slot select,
+  #atm-root .cf-imweb-slot.cf-imweb-slot textarea { font-size: 16px !important; }
+  #atm-root .cf-imweb-slot .cf-choice label { font-size: 12px !important; padding: 7px 12px !important; white-space: normal; }
+}
