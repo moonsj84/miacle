@@ -1,14 +1,14 @@
 <!-- ==========================================================================
-     미아클 CONTACT 입력폼 — 홈페이지 메인  ·  아임웹 코드 위젯 붙여넣기용 (자동 생성)
+     미아클 CONTACT 입력폼 — 앳더모먼 · 폼만 (권장)  ·  아임웹 코드 위젯 붙여넣기용 (자동 생성)
      --------------------------------------------------------------------------
      ⚠️ 이 파일을 직접 고치지 마세요.
         문구는 src/copy.json, 디자인은 src/contact-form.css 를 고친 뒤
         `node build.js` 를 실행하면 이 파일이 다시 만들어집니다.
 
-     대상 페이지 : https://www.miacle.co.kr/
+     대상 페이지 : 앳더모먼 메인 / 앳더모먼 페이지 — 기존 CONTACT 블록 아래
      톤          : dark   (섹션 태그의 data-atm-theme 값으로 변경)
-     여백        : full   (full = 메인용 넉넉하게 / compact = 하단 CONTACT용)
-     모드        : full   (bare = 폼만. 기존 CONTACT 블록은 그대로 두고 그 아래에 배치)
+     여백        : compact   (full = 메인용 넉넉하게 / compact = 하단 CONTACT용)
+     모드        : bare   (bare = 폼만. 기존 CONTACT 블록은 그대로 두고 그 아래에 배치)
 
      설치
        1. 이 파일 전체를 복사합니다.
@@ -707,53 +707,13 @@
      data-atm-size  : "full" | "compact"             ← 상하 여백 (하단 CONTACT는 compact)
      data-atm-mode  : "full" | "bare"                ← bare = 폼만 (기존 CONTACT 블록을 그대로 둘 때) -->
 <section class="atm-contact" id="contact"
-         data-atm-theme="dark" data-atm-size="full" data-atm-mode="full"
+         data-atm-theme="dark" data-atm-size="compact" data-atm-mode="bare"
          aria-labelledby="atm-contact-title">
   <div class="atm-contact__inner">
 
-    <!-- ASIDE:START · bare 모드에서는 이 구간이 통째로 빠집니다 -->
-    <div class="atm-contact__aside">
-      <span class="atm-contact__eyebrow">Contact</span>
-
-      <h2 class="atm-contact__title" id="atm-contact-title">당신의 비즈니스가<br>기적이 되도록</h2>
-
-      <p class="atm-contact__lead">브랜드 기획과 마케팅, 사진·영상 제작, 공간과 경험 설계까지. 미아클은 브랜드에 필요한 모든 단계를 함께합니다. 아직 정리되지 않은 구상이어도 괜찮습니다. 편하게 남겨주시면 담당자가 내용을 확인한 뒤 <strong>영업일 1~2일 이내</strong>에 연락드립니다.</p>
-
-      <dl class="atm-contact__info">
-
-        <div class="atm-contact__info-row">
-          <dt class="atm-contact__info-label">Email</dt>
-          <dd class="atm-contact__info-value">
-            <a href="mailto:miaclife@naver.com">miaclife@naver.com</a>
-          </dd>
-        </div>
-
-        <div class="atm-contact__info-row">
-          <dt class="atm-contact__info-label">Phone</dt>
-          <dd class="atm-contact__info-value">
-            <a href="tel:0507-1379-5380">0507-1379-5380</a>
-            <span class="atm-contact__info-sub">평일 10:00 – 18:00 (주말·공휴일 휴무)</span>
-          </dd>
-        </div>
-
-        <div class="atm-contact__info-row">
-          <dt class="atm-contact__info-label">Studio</dt>
-          <dd class="atm-contact__info-value">
-            경북 포항시 북구 흥해읍 한동로40번길 20
-            <span class="atm-contact__info-sub">방문 상담은 사전 예약제로 운영됩니다.</span>
-          </dd>
-        </div>
-
-      </dl>
-    </div>
-    <!-- ASIDE:END -->
 
     <!-- ── 오른쪽: 입력폼이 들어앉는 카드 ─────────────────────────────── -->
     <div class="atm-contact__panel">
-      <!-- HEAD:START -->
-      <h3 class="atm-contact__panel-title">프로젝트 문의하기</h3>
-      <p class="atm-contact__panel-desc">아래 항목을 작성해 주시면 상담을 준비해 연락드립니다.</p>
-      <!-- HEAD:END -->
 
       <!-- 필수/선택 범례 — 폼 위에 항상 보이도록 둡니다. -->
       <p class="atm-contact__legend">
@@ -765,12 +725,6 @@
       <!-- 아임웹 입력폼 위젯이 이 안으로 이동합니다. 비워두세요. -->
       <div class="atm-contact__slot"></div>
 
-      <!-- FOOT:START -->
-      <p class="atm-contact__footnote">
-        보내주신 내용은 상담 목적으로만 사용되며, 목적 달성 후 지체 없이 파기합니다.
-        보다 빠른 상담이 필요하시면 전화 또는 이메일로 연락해 주세요.
-      </p>
-      <!-- FOOT:END -->
     </div>
 
   </div>

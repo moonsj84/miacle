@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>미아클 CONTACT · 북클럽다이브 미리보기</title>
+<title>미아클 CONTACT · 앳더모먼 · 폼만 (권장) 미리보기</title>
 <style>
   body {
     margin: 0;
@@ -722,17 +722,17 @@
 <body>
 
 <div class="pv-bar">
-  <strong>북클럽다이브</strong>
+  <strong>앳더모먼 · 폼만 (권장)</strong>
   <div class="pv-switch" role="group" aria-label="테마 선택">
     <button type="button" data-pv-theme="dark"  aria-pressed="true">다크</button>
     <button type="button" data-pv-theme="light" aria-pressed="false">라이트</button>
     <button type="button" data-pv-theme="auto"  aria-pressed="false">자동</button>
   </div>
   <span class="pv-note">데모입니다 — 실제 접수는 아임웹 입력폼(b202609115a34b122e2d20)으로 전송됩니다.</span>
-  <a href="atmoment-bare.html">앳더모먼 · 폼만 (권장) 보기 →</a> <a href="main.html">홈페이지 메인 보기 →</a> <a href="common.html">공통 (나머지 전 페이지) 보기 →</a> <a href="atmoment.html">앳더모먼 보기 →</a> <a href="myrealmuseum.html">마이리얼뮤지엄 보기 →</a> <a href="meltrush.html">멜트러쉬 보기 →</a>
+  <a href="main.html">홈페이지 메인 보기 →</a> <a href="common.html">공통 (나머지 전 페이지) 보기 →</a> <a href="atmoment.html">앳더모먼 보기 →</a> <a href="myrealmuseum.html">마이리얼뮤지엄 보기 →</a> <a href="bookclubdive.html">북클럽다이브 보기 →</a> <a href="meltrush.html">멜트러쉬 보기 →</a>
 </div>
 
-<div class="pv-above"><p>… 북클럽다이브 …</p></div>
+<div class="pv-above"><p>… 앳더모먼 · 폼만 (권장) …</p></div>
 
 <!-- ==========================================================================
      미아클 — CONTACT 섹션 템플릿
@@ -747,53 +747,13 @@
      data-atm-size  : "full" | "compact"             ← 상하 여백 (하단 CONTACT는 compact)
      data-atm-mode  : "full" | "bare"                ← bare = 폼만 (기존 CONTACT 블록을 그대로 둘 때) -->
 <section class="atm-contact" id="contact"
-         data-atm-theme="dark" data-atm-size="compact" data-atm-mode="full"
+         data-atm-theme="dark" data-atm-size="compact" data-atm-mode="bare"
          aria-labelledby="atm-contact-title">
   <div class="atm-contact__inner">
 
-    <!-- ASIDE:START · bare 모드에서는 이 구간이 통째로 빠집니다 -->
-    <div class="atm-contact__aside">
-      <span class="atm-contact__eyebrow">Contact</span>
-
-      <h2 class="atm-contact__title" id="atm-contact-title">대체되지 않는 힘은<br>읽기에서 시작합니다</h2>
-
-      <p class="atm-contact__lead">북클럽다이브는 독서와 토론, 논술로 AI 시대에도 대체되지 않는 역량을 키웁니다. 프로그램 참여 문의도, 학교·기관 협업 제안도 좋습니다. 편하게 남겨주시면 담당자가 내용을 확인한 뒤 <strong>영업일 1~2일 이내</strong>에 연락드립니다.</p>
-
-      <dl class="atm-contact__info">
-
-        <div class="atm-contact__info-row">
-          <dt class="atm-contact__info-label">Email</dt>
-          <dd class="atm-contact__info-value">
-            <a href="mailto:miaclife@naver.com">miaclife@naver.com</a>
-          </dd>
-        </div>
-
-        <div class="atm-contact__info-row">
-          <dt class="atm-contact__info-label">Phone</dt>
-          <dd class="atm-contact__info-value">
-            <a href="tel:0507-1379-5380">0507-1379-5380</a>
-            <span class="atm-contact__info-sub">평일 10:00 – 18:00 (주말·공휴일 휴무)</span>
-          </dd>
-        </div>
-
-        <div class="atm-contact__info-row">
-          <dt class="atm-contact__info-label">Studio</dt>
-          <dd class="atm-contact__info-value">
-            경북 포항시 북구 흥해읍 한동로40번길 20
-            <span class="atm-contact__info-sub">방문 상담은 사전 예약제로 운영됩니다.</span>
-          </dd>
-        </div>
-
-      </dl>
-    </div>
-    <!-- ASIDE:END -->
 
     <!-- ── 오른쪽: 입력폼이 들어앉는 카드 ─────────────────────────────── -->
     <div class="atm-contact__panel">
-      <!-- HEAD:START -->
-      <h3 class="atm-contact__panel-title">문의하기</h3>
-      <p class="atm-contact__panel-desc">아래 항목을 작성해 주시면 상담을 준비해 연락드립니다.</p>
-      <!-- HEAD:END -->
 
       <!-- 필수/선택 범례 — 폼 위에 항상 보이도록 둡니다. -->
       <p class="atm-contact__legend">
@@ -805,12 +765,6 @@
       <!-- 아임웹 입력폼 위젯이 이 안으로 이동합니다. 비워두세요. -->
       <div class="atm-contact__slot"></div>
 
-      <!-- FOOT:START -->
-      <p class="atm-contact__footnote">
-        보내주신 내용은 상담 목적으로만 사용되며, 목적 달성 후 지체 없이 파기합니다.
-        보다 빠른 상담이 필요하시면 전화 또는 이메일로 연락해 주세요.
-      </p>
-      <!-- FOOT:END -->
     </div>
 
   </div>

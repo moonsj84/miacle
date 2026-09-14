@@ -8,13 +8,14 @@
      ========================================================================== -->
 
 <!-- data-atm-theme : "dark" | "light" | "auto"     ← 전체 톤
-     data-atm-size  : "full" | "compact"             ← 상하 여백 (하단 CONTACT는 compact) -->
+     data-atm-size  : "full" | "compact"             ← 상하 여백 (하단 CONTACT는 compact)
+     data-atm-mode  : "full" | "bare"                ← bare = 폼만 (기존 CONTACT 블록을 그대로 둘 때) -->
 <section class="atm-contact" id="contact"
-         data-atm-theme="{{THEME}}" data-atm-size="{{SIZE}}"
+         data-atm-theme="{{THEME}}" data-atm-size="{{SIZE}}" data-atm-mode="{{MODE}}"
          aria-labelledby="atm-contact-title">
   <div class="atm-contact__inner">
 
-    <!-- ── 왼쪽: 안내 + 직접 연락처 ───────────────────────────────────── -->
+    <!-- ASIDE:START · bare 모드에서는 이 구간이 통째로 빠집니다 -->
     <div class="atm-contact__aside">
       <span class="atm-contact__eyebrow">{{EYEBROW}}</span>
 
@@ -49,11 +50,14 @@
 
       </dl>
     </div>
+    <!-- ASIDE:END -->
 
     <!-- ── 오른쪽: 입력폼이 들어앉는 카드 ─────────────────────────────── -->
     <div class="atm-contact__panel">
+      <!-- HEAD:START -->
       <h3 class="atm-contact__panel-title">{{PANEL_TITLE}}</h3>
       <p class="atm-contact__panel-desc">{{PANEL_DESC}}</p>
+      <!-- HEAD:END -->
 
       <!-- 필수/선택 범례 — 폼 위에 항상 보이도록 둡니다. -->
       <p class="atm-contact__legend">
@@ -65,10 +69,12 @@
       <!-- 아임웹 입력폼 위젯이 이 안으로 이동합니다. 비워두세요. -->
       <div class="atm-contact__slot"></div>
 
+      <!-- FOOT:START -->
       <p class="atm-contact__footnote">
         보내주신 내용은 상담 목적으로만 사용되며, 목적 달성 후 지체 없이 파기합니다.
         보다 빠른 상담이 필요하시면 전화 또는 이메일로 연락해 주세요.
       </p>
+      <!-- FOOT:END -->
     </div>
 
   </div>

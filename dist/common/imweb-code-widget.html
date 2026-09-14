@@ -8,6 +8,7 @@
      대상 페이지 : 하단 CONTACT가 들어가는 모든 페이지
      톤          : dark   (섹션 태그의 data-atm-theme 값으로 변경)
      여백        : compact   (full = 메인용 넉넉하게 / compact = 하단 CONTACT용)
+     모드        : full   (bare = 폼만. 기존 CONTACT 블록은 그대로 두고 그 아래에 배치)
 
      설치
        1. 이 파일 전체를 복사합니다.
@@ -76,6 +77,7 @@
   --atm-surface:    #FFFFFF;   /* 폼 카드 배경 */
   --atm-field:      #FFFFFF;   /* 입력칸 배경 */
   --atm-accent:     #14110F;
+  --atm-accent-strong: var(--atm-accent);
   --atm-accent-ink: #FFFFFF;
   --atm-error:      #C0392B;
   --atm-shadow:     0 1px 2px rgba(20, 17, 15, 0.03),
@@ -98,7 +100,12 @@
   --atm-paper:      #0B0B0C;   /* 섹션 배경 */
   --atm-surface:    #151517;   /* 폼 카드 배경 */
   --atm-field:      #1C1C1F;   /* 입력칸 배경 — 카드보다 살짝 밝게 */
-  --atm-accent:     #D83426;   /* 흰 글자 대비 4.73:1 — WCAG AA 통과 */
+  /* 브랜드 레드 — 기존 CONTACT 섹션의 'get in touch' / PHONE·EMAIL 라벨 색.
+     정확한 코드를 받으면 이 한 줄만 바꾸면 됩니다. */
+  --atm-accent:     #E23B3B;
+  /* 버튼처럼 흰 글자를 얹는 곳은 자동으로 조금 어둡게 써서 대비를 확보합니다.
+     (밝은 레드 위의 흰 글자는 WCAG AA 4.5:1 을 넘기지 못합니다) */
+  --atm-accent-strong: color-mix(in srgb, var(--atm-accent) 84%, #000);
   --atm-accent-ink: #FFFFFF;
   --atm-error:      #FF6B5C;
   --atm-shadow:     0 1px 2px rgba(0, 0, 0, 0.4),
@@ -110,6 +117,26 @@
 .atm-contact *,
 .atm-contact *::before,
 .atm-contact *::after { box-sizing: border-box; }
+
+
+/* ── 모드 옵션 ─────────────────────────────────────────────────────────
+   data-atm-mode="bare" 는 제목·소개문·연락처를 빼고 폼만 남깁니다.
+   사이트에 이미 CONTACT 블록(타이틀·연락처·안내문)이 있을 때 쓰세요.
+   그 블록 아래에 이 위젯만 놓으면 중복 없이 폼이 붙습니다.            */
+.atm-contact[data-atm-mode="bare"] {
+  padding-block: clamp(0px, 2vw, 24px);
+  background: transparent;          /* 위쪽 CONTACT 블록의 배경을 그대로 이어받음 */
+}
+
+.atm-contact[data-atm-mode="bare"] .atm-contact__inner {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 760px;
+}
+
+/* 위 블록과 이어 보이도록 카드 테두리를 조금 더 뚜렷하게 */
+.atm-contact[data-atm-mode="bare"] .atm-contact__panel {
+  border-color: var(--atm-line);
+}
 
 
 /* ── 크기 옵션 ─────────────────────────────────────────────────────────
@@ -574,9 +601,9 @@
   min-height: 58px !important;
   margin-top: 10px !important;
   padding: 0 24px !important;
-  border: 1px solid var(--atm-accent) !important;
+  border: 1px solid var(--atm-accent-strong) !important;
   border-radius: var(--atm-radius) !important;
-  background: var(--atm-accent) !important;
+  background: var(--atm-accent-strong) !important;
   color: var(--atm-accent-ink) !important;
   font-family: inherit !important;
   font-size: 15px !important;
@@ -677,13 +704,14 @@
      ========================================================================== -->
 
 <!-- data-atm-theme : "dark" | "light" | "auto"     ← 전체 톤
-     data-atm-size  : "full" | "compact"             ← 상하 여백 (하단 CONTACT는 compact) -->
+     data-atm-size  : "full" | "compact"             ← 상하 여백 (하단 CONTACT는 compact)
+     data-atm-mode  : "full" | "bare"                ← bare = 폼만 (기존 CONTACT 블록을 그대로 둘 때) -->
 <section class="atm-contact" id="contact"
-         data-atm-theme="dark" data-atm-size="compact"
+         data-atm-theme="dark" data-atm-size="compact" data-atm-mode="full"
          aria-labelledby="atm-contact-title">
   <div class="atm-contact__inner">
 
-    <!-- ── 왼쪽: 안내 + 직접 연락처 ───────────────────────────────────── -->
+    <!-- ASIDE:START · bare 모드에서는 이 구간이 통째로 빠집니다 -->
     <div class="atm-contact__aside">
       <span class="atm-contact__eyebrow">Contact</span>
 
@@ -718,11 +746,14 @@
 
       </dl>
     </div>
+    <!-- ASIDE:END -->
 
     <!-- ── 오른쪽: 입력폼이 들어앉는 카드 ─────────────────────────────── -->
     <div class="atm-contact__panel">
+      <!-- HEAD:START -->
       <h3 class="atm-contact__panel-title">문의하기</h3>
       <p class="atm-contact__panel-desc">아래 항목을 작성해 주시면 상담을 준비해 연락드립니다.</p>
+      <!-- HEAD:END -->
 
       <!-- 필수/선택 범례 — 폼 위에 항상 보이도록 둡니다. -->
       <p class="atm-contact__legend">
@@ -734,10 +765,12 @@
       <!-- 아임웹 입력폼 위젯이 이 안으로 이동합니다. 비워두세요. -->
       <div class="atm-contact__slot"></div>
 
+      <!-- FOOT:START -->
       <p class="atm-contact__footnote">
         보내주신 내용은 상담 목적으로만 사용되며, 목적 달성 후 지체 없이 파기합니다.
         보다 빠른 상담이 필요하시면 전화 또는 이메일로 연락해 주세요.
       </p>
+      <!-- FOOT:END -->
     </div>
 
   </div>
